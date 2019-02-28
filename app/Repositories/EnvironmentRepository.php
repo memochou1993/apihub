@@ -21,7 +21,7 @@ class EnvironmentRepository implements EnvironmentInterface
      * @param  array  $query
      * @return \App\Environment
      */
-    public function getUserProjectEnvironments(User $user, Project $project, array $query)
+    public function getUserProjectEnvironments(User $user, Project $project, array $query = [])
     {
         $this->castQuery($query);
 
@@ -37,7 +37,7 @@ class EnvironmentRepository implements EnvironmentInterface
      * @param  array  $query
      * @return \App\Environment
      */
-    public function getUserProjectEnvironment(User $user, Project $project, Environment $environment, array $query)
+    public function getUserProjectEnvironment(User $user, Project $project, Environment $environment, array $query = [])
     {
         $this->castQuery($query);
         
