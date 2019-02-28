@@ -4,10 +4,13 @@ namespace App\Repositories;
 
 use App\User;
 use App\Project;
+use App\Traits\Queryable;
 use App\Contracts\ProjectInterface;
 
 class ProjectRepository implements ProjectInterface
 {
+    use Queryable;
+
     /**
      * Get all projects.
      * 
@@ -17,7 +20,9 @@ class ProjectRepository implements ProjectInterface
      */
     public function getProjects(Project $project, array $query)
     {
-        return $project->where($query['where'] ?? [])->paginate();
+        $this->castQuery($query);
+
+        return $project->where($this->where)->paginate();
     }
 
     /**
@@ -29,7 +34,9 @@ class ProjectRepository implements ProjectInterface
      */
     public function getProject(Project $project, array $query)
     {
-        return $project->where($query['where'] ?? [])->findOrFail($project->id);
+        $this->castQuery($query);
+
+        return $project->where($this->where)->findOrFail($project->id);
     }
 
     /**
@@ -41,7 +48,9 @@ class ProjectRepository implements ProjectInterface
      */
     public function getUserProjects(User $user, array $query)
     {
-        return $user->projects()->where($query['where'] ?? [])->paginate();
+        $this->castQuery($query);
+
+        return $user->projects()->where($this->where)->paginate();
     }
 
     /**
@@ -53,12 +62,8 @@ class ProjectRepository implements ProjectInterface
      */
     public function getUserProject(User $user, Project $project, array $query)
     {
-        $projects = $user->projects()->where($query['where'] ?? []);
+        $this->castQuery($query);
 
-        if ($query['with'] ?? false) {
-            $projects->with(explode(',', $query['with']));
-        }
-
-        return $projects->findOrFail($project->id);
+        return $user->projects()->where($this->where)->with($this->with)->findOrFail($project->id);
     }
 }

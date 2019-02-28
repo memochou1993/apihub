@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Project;
 use App\Environment;
+use App\Traits\Queryable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
 use App\Contracts\EnvironmentInterface as Repository;
@@ -11,6 +12,8 @@ use App\Http\Resources\EnvironmentResource as Resource;
 
 class EnvironmentController extends ApiController
 {
+    use Queryable;
+
     /**
      * @var \Illuminate\Http\Request
      */
@@ -35,6 +38,10 @@ class EnvironmentController extends ApiController
         $this->request = $request;
         
         $this->reposotory = $reposotory;
+
+        $this->setQuery([
+            'with' => $request->with,
+        ]);
     }
 
     /**
@@ -45,11 +52,7 @@ class EnvironmentController extends ApiController
      */
     public function index(Project $project)
     {
-        $user = $this->user;
-
-        $query = [];
-
-        $environments = $this->reposotory->getUserProjectEnvironments($user, $project, $query);
+        $environments = $this->reposotory->getUserProjectEnvironments($this->user, $project, $this->query);
 
         return Resource::collection($environments);
     }
@@ -73,13 +76,7 @@ class EnvironmentController extends ApiController
      */
     public function show(Project $project, Environment $environment)
     {
-        $user = $this->user;
-
-        $query = [
-            'with' => $this->request->relationships,
-        ];
-
-        $environments = $this->reposotory->getUserProjectEnvironment($user, $project, $environment, $query);
+        $environments = $this->reposotory->getUserProjectEnvironment($this->user, $project, $environment, $this->query);
 
         return new Resource($environments);
     }

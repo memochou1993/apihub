@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Project;
+use App\Traits\Queryable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
 use App\Contracts\ProjectInterface as Repository;
@@ -10,6 +11,8 @@ use App\Http\Resources\ProjectResource as Resource;
 
 class ProjectController extends ApiController
 {
+    use Queryable;
+
     /**
      * @var \Illuminate\Http\Request
      */
@@ -34,6 +37,10 @@ class ProjectController extends ApiController
         $this->request = $request;
         
         $this->reposotory = $reposotory;
+
+        $this->setQuery([
+            'with' => $request->with,
+        ]);
     }
 
     /**
@@ -43,11 +50,7 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        $user = $this->user;
-
-        $query = [];
-
-        $projects = $this->reposotory->getUserProjects($user, $query);
+        $projects = $this->reposotory->getUserProjects($this->user, $this->query);
 
         return Resource::collection($projects);
     }
@@ -70,13 +73,7 @@ class ProjectController extends ApiController
      */
     public function show(Project $project)
     {
-        $user = $this->user;
-
-        $query = [
-            'with' => $this->request->relationships,
-        ];
-        
-        $project = $this->reposotory->getUserProject($user, $project, $query);
+        $project = $this->reposotory->getUserProject($this->user, $project, $this->query);
 
         return new Resource($project);
     }

@@ -18,7 +18,7 @@ class ProjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'visibility' => $this->visibility,
+            'private' => $this->private,
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
             'users' => UserResource::collection($this->whenLoaded('users')),

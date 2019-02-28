@@ -5,10 +5,13 @@ namespace App\Repositories;
 use App\User;
 use App\Project;
 use App\Environment;
+use App\Traits\Queryable;
 use App\Contracts\EnvironmentInterface;
 
 class EnvironmentRepository implements EnvironmentInterface
 {
+    use Queryable;
+
     /**
      * Get all environments of the specified project for the specified user.
      * 
@@ -20,7 +23,9 @@ class EnvironmentRepository implements EnvironmentInterface
      */
     public function getUserProjectEnvironments(User $user, Project $project, array $query)
     {
-        return $user->projects()->findOrFail($project->id)->environments()->where($query['where'] ?? [])->paginate();
+        $this->castQuery($query);
+
+        return $user->projects()->findOrFail($project->id)->environments()->where($this->where)->paginate();
     }
 
     /**
@@ -34,12 +39,10 @@ class EnvironmentRepository implements EnvironmentInterface
      */
     public function getUserProjectEnvironment(User $user, Project $project, Environment $environment, array $query)
     {
-        $environments = $user->projects()->findOrFail($project->id)->environments()->where($query['where'] ?? []);
+        $this->castQuery($query);
+        
+        $environment = $user->projects()->findOrFail($project->id)->environments()->where($this->where)->with($this->with)->findOrFail($environment->id);
 
-        if ($query['with'] ?? false) {
-            $environments->with(explode(',', $query['with']));
-        }
-
-        return $environments->findOrFail($environment->id);
+        return $environment;
     }
 }
