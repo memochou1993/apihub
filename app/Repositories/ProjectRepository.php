@@ -22,7 +22,7 @@ class ProjectRepository implements ProjectInterface
     {
         $this->castQuery($query);
 
-        return $project->where($this->where)->paginate();
+        return $project->where($this->where)->paginate($this->paginate);
     }
 
     /**
@@ -50,7 +50,7 @@ class ProjectRepository implements ProjectInterface
     {
         $this->castQuery($query);
 
-        return $user->projects()->where($this->where)->paginate();
+        return $user->projects()->where($this->where)->paginate($this->paginate);
     }
 
     /**

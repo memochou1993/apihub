@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Project;
 use App\Traits\Queryable;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Requests\ProjectRequest as Request;
 use App\Contracts\ProjectInterface as Repository;
 use App\Http\Resources\ProjectResource as Resource;
 
@@ -24,6 +24,11 @@ class ProjectController extends ApiController
     protected $reposotory;
 
     /**
+     * @var array
+     */
+    protected $errors;
+
+    /**
      * Create a new controller instance.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,7 +45,10 @@ class ProjectController extends ApiController
 
         $this->setQuery([
             'with' => $request->with,
+            'paginate' => $request->paginate,
         ]);
+
+        $this->errors = $this->request->validator ? $this->request->validator->errors() : null;
     }
 
     /**
@@ -50,7 +58,11 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        $projects = $this->reposotory->getUserProjects($this->user);
+        if ($this->errors) {
+            return $this->errors;
+        }
+
+        $projects = $this->reposotory->getUserProjects($this->user, $this->query);
 
         return Resource::collection($projects);
     }

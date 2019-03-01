@@ -25,7 +25,7 @@ class EnvironmentRepository implements EnvironmentInterface
     {
         $this->castQuery($query);
 
-        return $user->projects()->findOrFail($project->id)->environments()->where($this->where)->paginate();
+        return $user->projects()->findOrFail($project->id)->environments()->where($this->where)->paginate($this->paginate);
     }
 
     /**

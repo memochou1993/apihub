@@ -20,8 +20,11 @@ trait Queryable
     protected $where;
 
     /**
-     * 
-     *
+     * @var int
+     */
+    protected $paginate;
+
+    /**
      * @param  array  $queries
      * @return void
      */
@@ -33,8 +36,6 @@ trait Queryable
     }
 
     /**
-     * 
-     * 
      * @param  array  $query
      * @return void
      */
@@ -47,5 +48,9 @@ trait Queryable
         $with = explode(',', $query['with'] ?? '');
 
         $this->with = $with[0] ? $with : [];
+
+        $paginate = $query['paginate'] ?? 0;
+
+        $this->paginate = $paginate;
     }
 }
