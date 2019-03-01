@@ -25,11 +25,6 @@ class EnvironmentController extends ApiController
     protected $reposotory;
 
     /**
-     * @var array
-     */
-    protected $errors;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -48,8 +43,6 @@ class EnvironmentController extends ApiController
             'with' => $request->with,
             'paginate' => $request->paginate,
         ]);
-
-        $this->errors = $this->request->validator ? $this->request->validator->errors() : null;
     }
 
     /**
@@ -60,10 +53,6 @@ class EnvironmentController extends ApiController
      */
     public function index(Project $project)
     {
-        if ($this->errors) {
-            return $this->errors;
-        }
-
         $environments = $this->reposotory->getUserProjectEnvironments($this->user, $project, $this->query);
 
         return Resource::collection($environments);

@@ -24,11 +24,6 @@ class ProjectController extends ApiController
     protected $reposotory;
 
     /**
-     * @var array
-     */
-    protected $errors;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -47,8 +42,6 @@ class ProjectController extends ApiController
             'with' => $request->with,
             'paginate' => $request->paginate,
         ]);
-
-        $this->errors = $this->request->validator ? $this->request->validator->errors() : null;
     }
 
     /**
@@ -58,10 +51,6 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        if ($this->errors) {
-            return $this->errors;
-        }
-
         $projects = $this->reposotory->getUserProjects($this->user, $this->query);
 
         return Resource::collection($projects);
