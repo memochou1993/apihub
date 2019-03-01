@@ -41,16 +41,10 @@ trait Queryable
      */
     protected function castQuery(array $query)
     {
-        $where = $query['where'] ?? [];
+        $this->where = $query['where'] ?? [];
 
-        $this->where = $where;
+        $this->with = $query['with'] ? explode(',', $query['with'] ?? '') : [];
 
-        $with = explode(',', $query['with'] ?? '');
-
-        $this->with = $with[0] ? $with : [];
-
-        $paginate = $query['paginate'] ?? 0;
-
-        $this->paginate = $paginate;
+        $this->paginate = $query['paginate'] ?? 0;
     }
 }
