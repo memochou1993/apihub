@@ -4,12 +4,29 @@ namespace App\Repositories;
 
 use App\User;
 use App\Project;
+use App\Traits\Mutable;
 use App\Traits\Queryable;
 use App\Contracts\ProjectInterface;
 
 class ProjectRepository implements ProjectInterface
 {
-    use Queryable;
+    use Mutable, Queryable;
+
+    /**
+     * @var \App\Project
+     */
+    protected $project;
+
+    /**
+     * Create a new repository instance.
+     *
+     * @param  \App\Project  $project
+     * @return void
+     */
+    public function __construct(Project $project)
+    {
+        $this->project = $project;
+    }
 
     /**
      * Get all projects.
@@ -18,11 +35,11 @@ class ProjectRepository implements ProjectInterface
      * @param  array  $query
      * @return \App\Project
      */
-    public function getProjects(Project $project, array $query = [])
+    public function getProjects(array $query = [])
     {
         $this->castQuery($query);
 
-        return $project->where($this->where)->paginate($this->paginate);
+        return $this->project->where($this->where)->paginate($this->paginate);
     }
 
     /**
@@ -46,10 +63,28 @@ class ProjectRepository implements ProjectInterface
      * @param  array  $query
      * @return \App\Project
      */
-    public function getProject(Project $project, array $query = [])
+    public function getProject(int $id, array $query = [])
     {
         $this->castQuery($query);
 
-        return $project->where($this->where)->findOrFail($project->id);
+        return $this->project->where($this->where)->findOrFail($id);
+    }
+
+    /**
+     * Store a newly created project.
+     * 
+     * @param  \App\User  $user
+     * @param  array  $mutation
+     * @return \App\Project
+     */
+    public function storeProject(array $mutations = [])
+    {
+        $this->castMutation($mutations);
+
+        $project = $this->project->create($this->create);
+
+        $project->users()->attach($this->attach);
+
+        return $project;
     }
 }

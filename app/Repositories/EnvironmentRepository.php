@@ -13,7 +13,7 @@ class EnvironmentRepository implements EnvironmentInterface
     use Queryable;
 
     /**
-     * Get all environments of the specified project for the specified user.
+     * Get all environments of the specified project.
      * 
      * @param  \App\Project  $project
      * @param  array  $query
@@ -27,7 +27,7 @@ class EnvironmentRepository implements EnvironmentInterface
     }
 
     /**
-     * Get the specified environment of the specified project for the specified user.
+     * Get the specified environment of the specified project.
      * 
      * @param  \App\Project  $project
      * @param  \App\Environment  $environment

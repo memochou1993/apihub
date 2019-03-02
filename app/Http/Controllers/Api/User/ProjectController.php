@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Project;
+use App\Traits\Mutable;
 use App\Traits\Queryable;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\ProjectRequest as Request;
@@ -11,7 +12,7 @@ use App\Http\Resources\ProjectResource as Resource;
 
 class ProjectController extends ApiController
 {
-    use Queryable;
+    use Mutable, Queryable;
 
     /**
      * @var \Illuminate\Http\Request
@@ -51,7 +52,7 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        $projects = $this->reposotory->getProjectsByUser($this->user, $this->query);
+        $projects = $this->reposotory->getProjectsByUser($this->user, $this->queries);
 
         return Resource::collection($projects);
     }
@@ -63,7 +64,12 @@ class ProjectController extends ApiController
      */
     public function store()
     {
-        //
+        $this->setMutation([
+            'create' => $this->request->all(),
+            'attach' => $this->user,
+        ]);
+
+        return $this->reposotory->storeProject($this->mutations);
     }
 
     /**
@@ -76,7 +82,7 @@ class ProjectController extends ApiController
     {
         $this->authorize('view', $project);
 
-        $project = $this->reposotory->getProject($project, $this->query);
+        $project = $this->reposotory->getProject($project->id, $this->queries);
 
         return new Resource($project);
     }

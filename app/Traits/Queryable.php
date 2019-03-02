@@ -7,7 +7,7 @@ trait Queryable
     /**
      * @var array
      */
-    protected $query = [];
+    protected $queries = [];
 
     /**
      * @var array
@@ -31,20 +31,20 @@ trait Queryable
     protected function setQuery(array $queries)
     {
         foreach($queries as $key => $value) {
-            $this->query[$key] = $value;
+            $this->queries[$key] = $value;
         }
     }
 
     /**
-     * @param  array  $query
+     * @param  array  $queries
      * @return void
      */
-    protected function castQuery(array $query)
+    protected function castQuery(array $queries)
     {
-        $this->where = $query['where'] ?? [];
+        $this->where = $queries['where'] ?? [];
 
-        $this->with = $query['with'] ? explode(',', $query['with'] ?? '') : [];
+        $this->with = $queries['with'] ? explode(',', $queries['with'] ?? '') : [];
 
-        $this->paginate = $query['paginate'] ?? 0;
+        $this->paginate = $queries['paginate'] ?? 0;
     }
 }
