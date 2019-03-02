@@ -90,12 +90,18 @@ class ProjectController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+
+        $this->setMutation([
+            'update' => $this->request->all(),
+        ]);
+
+        return $this->reposotory->updateProject($project->id, $this->mutations);
     }
 
     /**

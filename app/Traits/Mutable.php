@@ -17,6 +17,11 @@ trait Mutable
     /**
      * @var array
      */
+    protected $update;
+
+    /**
+     * @var array
+     */
     protected $attach;
 
     /**
@@ -37,6 +42,8 @@ trait Mutable
     protected function castMutation(array $mutations)
     {
         $this->create = $mutations['create'] ?? [];
+
+        $this->update = $mutations['update'] ?? [];
 
         $this->attach = $mutations['attach'] ?? [];
     }

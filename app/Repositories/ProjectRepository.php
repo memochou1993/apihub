@@ -31,7 +31,6 @@ class ProjectRepository implements ProjectInterface
     /**
      * Get all projects.
      * 
-     * @param  \App\Project  $project
      * @param  array  $query
      * @return \App\Project
      */
@@ -59,7 +58,7 @@ class ProjectRepository implements ProjectInterface
     /**
      * Get the specified project.
      * 
-     * @param  \App\Project  $project
+     * @param  int  $id
      * @param  array  $query
      * @return \App\Project
      */
@@ -73,8 +72,7 @@ class ProjectRepository implements ProjectInterface
     /**
      * Store a newly created project.
      * 
-     * @param  \App\User  $user
-     * @param  array  $mutation
+     * @param  array  $mutations
      * @return \App\Project
      */
     public function storeProject(array $mutations = [])
@@ -84,6 +82,23 @@ class ProjectRepository implements ProjectInterface
         $project = $this->project->create($this->create);
 
         $project->users()->attach($this->attach);
+
+        return $project;
+    }
+
+    /**
+     * Update the specified project.
+     * 
+     * @param  array  $mutations
+     * @return \App\Project
+     */
+    public function updateProject(int $id, array $mutations = [])
+    {
+        $this->castMutation($mutations);
+
+        $project = $this->project->find($id);
+
+        $project->update($this->update);
 
         return $project;
     }

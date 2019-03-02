@@ -42,7 +42,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        //
+        return in_array($user->id, $project->users()->get()->pluck('id')->all());
     }
 
     /**
