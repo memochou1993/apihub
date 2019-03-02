@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\With;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EnvironmentRequest extends FormRequest
@@ -28,6 +29,9 @@ class EnvironmentRequest extends FormRequest
         switch($method) {
             case 'GET':
                 return [
+                    'with' =>  new With([
+                        'project',
+                    ]),
                     'paginate' => 'min:1|integer',
                 ];
 
