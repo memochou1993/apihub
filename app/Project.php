@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -21,6 +22,16 @@ class Project extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_project')->withTimestamps();
+    }
+    
+    /**
+     * Get the route key for the model.
+     * 
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return App::environment('local') ? 'id' : 'name';
     }
 
     /**
