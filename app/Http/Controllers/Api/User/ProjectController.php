@@ -74,14 +74,12 @@ class ProjectController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Project  $project
+     * @param  string  $name
      * @return \App\Http\Resources\ProjectResource
      */
-    public function show(Project $project)
+    public function show(string $name)
     {
-        $this->authorize('view', $project);
-
-        $project = $this->reposotory->getProject($project->id, $this->queries);
+        $project = $this->reposotory->getUserProjectByName($this->user, $name, $this->queries);
 
         return new Resource($project);
     }

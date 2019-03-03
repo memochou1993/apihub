@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\User;
 use App\Project;
 use App\Environment;
 use App\Traits\Queryable;
@@ -13,8 +12,6 @@ class EnvironmentRepository implements EnvironmentInterface
     use Queryable;
 
     /**
-     * Get all environments of the specified project.
-     * 
      * @param  \App\Project  $project
      * @param  array  $queries
      * @return \App\Environment
@@ -27,8 +24,6 @@ class EnvironmentRepository implements EnvironmentInterface
     }
 
     /**
-     * Get the specified environment of the specified project.
-     * 
      * @param  \App\Project  $project
      * @param  \App\Environment  $environment
      * @param  array  $queries

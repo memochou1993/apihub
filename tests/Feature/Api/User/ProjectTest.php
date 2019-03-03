@@ -62,7 +62,7 @@ class ProjectTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-        ])->json('GET', '/api/users/me/projects/1?with=users');
+        ])->json('GET', '/api/users/me/projects/project?with=users');
 
         $response->assertStatus(200);
 

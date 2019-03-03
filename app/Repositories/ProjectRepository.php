@@ -28,12 +28,10 @@ class ProjectRepository implements ProjectInterface
     }
 
     /**
-     * Get all projects.
-     * 
      * @param  array  $queries
      * @return \App\Project
      */
-    public function getProjects(array $queries = [])
+    public function getAllProjects(array $queries = [])
     {
         $this->castQueries($queries);
 
@@ -41,8 +39,6 @@ class ProjectRepository implements ProjectInterface
     }
 
     /**
-     * Get all projects for the specified user.
-     * 
      * @param  \App\User  $user
      * @param  array  $queries
      * @return \App\Project
@@ -55,22 +51,19 @@ class ProjectRepository implements ProjectInterface
     }
 
     /**
-     * Get the specified project.
-     * 
-     * @param  int  $id
+     * @param  \App\User  $user
+     * @param  string  $name
      * @param  array  $queries
      * @return \App\Project
      */
-    public function getProject(int $id, array $queries = [])
+    public function getUserProjectByName(User $user, string $name, array $queries = [])
     {
         $this->castQueries($queries);
 
-        return $this->project->where($this->where)->with($this->with)->findOrFail($id);
+        return $user->projects()->where('name', $name)->with($this->with)->firstOrFail();
     }
 
     /**
-     * Store a newly created project.
-     * 
      * @param  \App\User  $user
      * @param  array  $request
      * @return \App\Project
@@ -85,8 +78,6 @@ class ProjectRepository implements ProjectInterface
     }
 
     /**
-     * Update the specified project.
-     * 
      * @param  int  $id
      * @param  array  $request
      * @return \App\Project
@@ -101,8 +92,6 @@ class ProjectRepository implements ProjectInterface
     }
 
     /**
-     * Remove the specified project.
-     * 
      * @param  int  $id
      * @return \App\Project
      */
