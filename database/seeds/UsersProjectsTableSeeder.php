@@ -1,9 +1,9 @@
 <?php
 
-use App\Environment;
+use App\UserProject;
 use Illuminate\Database\Seeder;
 
-class EnvironmentTableSeeder extends Seeder
+class UsersProjectsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class EnvironmentTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Environment::class, config('seeds.environments'))->create();
+        factory(UserProject::class, config('seeds.users_projects'))->create();
     }
 }
