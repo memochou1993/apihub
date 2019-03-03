@@ -14,6 +14,11 @@ class ProjectController extends ApiController
     use Queryable;
 
     /**
+     * @var \App\User
+     */
+    protected $user;
+
+    /**
      * @var \Illuminate\Http\Request
      */
     protected $request;
