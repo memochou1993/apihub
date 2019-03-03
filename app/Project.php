@@ -23,16 +23,6 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, 'user_project')->withTimestamps();
     }
-    
-    /**
-     * Get the route key for the model.
-     * 
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return App::environment('local') ? 'id' : 'name';
-    }
 
     /**
      * Get the environments for the project.

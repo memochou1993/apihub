@@ -56,7 +56,7 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        $projects = $this->reposotory->getProjects($this->user, $this->queries);
+        $projects = $this->reposotory->getUserProjects($this->user, $this->queries);
 
         return Resource::collection($projects);
     }

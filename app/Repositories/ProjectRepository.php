@@ -33,7 +33,7 @@ class ProjectRepository implements ProjectInterface
      * @param  array  $queries
      * @return \App\Project
      */
-    public function getAllProjects(array $queries = [])
+    public function getProjects(array $queries = [])
     {
         $this->castQueries($queries);
 
@@ -47,7 +47,7 @@ class ProjectRepository implements ProjectInterface
      * @param  array  $queries
      * @return \App\Project
      */
-    public function getProjects(User $user, array $queries = [])
+    public function getUserProjects(User $user, array $queries = [])
     {
         $this->castQueries($queries);
 
@@ -65,7 +65,7 @@ class ProjectRepository implements ProjectInterface
     {
         $this->castQueries($queries);
 
-        return $this->project->where($this->where)->findOrFail($id);
+        return $this->project->where($this->where)->with($this->with)->findOrFail($id);
     }
 
     /**

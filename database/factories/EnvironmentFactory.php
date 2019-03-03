@@ -4,7 +4,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Environment::class, function (Faker $faker) {
     return [
-        'name' => $faker->bothify('Test Environment ##??'),
+        'name' => $faker->bothify('##??'),
         'description' => $faker->sentence(),
         'variable' => json_encode([
             'API_KEY' => '$2y$10$7lYuU08DeN1tsZJdNHBl4OaF4mWpezqQxSE7HalIgi9xQ/5JTwYfS', // key
