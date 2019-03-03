@@ -21,7 +21,7 @@ class EnvironmentRepository implements EnvironmentInterface
      */
     public function getProjectEnvironments(Project $project, array $queries = [])
     {
-        $this->castQuery($queries);
+        $this->castQueries($queries);
 
         return $project->environments()->where($this->where)->paginate($this->paginate);
     }
@@ -36,7 +36,7 @@ class EnvironmentRepository implements EnvironmentInterface
      */
     public function getProjectEnvironment(Project $project, Environment $environment, array $queries = [])
     {
-        $this->castQuery($queries);
+        $this->castQueries($queries);
         
         return $project->environments()->where($this->where)->with($this->with)->findOrFail($environment->id);
     }

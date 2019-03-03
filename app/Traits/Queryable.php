@@ -12,12 +12,12 @@ trait Queryable
     /**
      * @var array
      */
-    protected $with;
+    protected $where;
 
     /**
      * @var array
      */
-    protected $where;
+    protected $with;
 
     /**
      * @var int
@@ -28,7 +28,7 @@ trait Queryable
      * @param  array  $queries
      * @return void
      */
-    protected function setQuery(array $queries)
+    protected function setQueries(array $queries)
     {
         foreach($queries as $key => $value) {
             $this->queries[$key] = $value;
@@ -39,7 +39,7 @@ trait Queryable
      * @param  array  $queries
      * @return void
      */
-    protected function castQuery(array $queries)
+    protected function castQueries(array $queries)
     {
         $this->where = $queries['where'] ?? [];
 

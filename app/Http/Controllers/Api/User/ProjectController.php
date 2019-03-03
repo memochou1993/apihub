@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Project;
-use App\Traits\Mutable;
 use App\Traits\Queryable;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\ProjectRequest as Request;
@@ -12,7 +11,7 @@ use App\Http\Resources\ProjectResource as Resource;
 
 class ProjectController extends ApiController
 {
-    use Mutable, Queryable;
+    use Queryable;
 
     /**
      * @var \Illuminate\Http\Request
@@ -36,10 +35,10 @@ class ProjectController extends ApiController
         parent::__construct();
 
         $this->request = $request;
-        
+
         $this->reposotory = $reposotory;
 
-        $this->setQuery([
+        $this->setQueries([
             'with' => $request->with,
             'paginate' => $request->paginate,
         ]);
@@ -52,7 +51,7 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        $projects = $this->reposotory->getProjectsByUser($this->user, $this->queries);
+        $projects = $this->reposotory->getProjects($this->user, $this->queries);
 
         return Resource::collection($projects);
     }
@@ -64,12 +63,7 @@ class ProjectController extends ApiController
      */
     public function store()
     {
-        $this->setMutation([
-            'create' => $this->request->all(),
-            'attach' => $this->user,
-        ]);
-
-        return $this->reposotory->storeProject($this->mutations);
+        return $this->reposotory->storeProject($this->user, $this->request->all());
     }
 
     /**
@@ -97,21 +91,19 @@ class ProjectController extends ApiController
     {
         $this->authorize('update', $project);
 
-        $this->setMutation([
-            'update' => $this->request->all(),
-        ]);
-
-        return $this->reposotory->updateProject($project->id, $this->mutations);
+        return $this->reposotory->updateProject($project->id, $this->request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        $this->authorize('delete', $project);
+
+        return $this->reposotory->destroyProject($project->id);
     }
 }

@@ -39,7 +39,7 @@ class EnvironmentController extends ApiController
         
         $this->reposotory = $reposotory;
 
-        $this->setQuery([
+        $this->setQueries([
             'with' => $request->with,
             'paginate' => $request->paginate,
         ]);
