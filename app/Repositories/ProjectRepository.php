@@ -31,7 +31,7 @@ class ProjectRepository implements ProjectInterface
      * @param  array  $queries
      * @return \App\Project
      */
-    public function getAllProjects(array $queries = [])
+    public function getProjects(array $queries = [])
     {
         $this->castQueries($queries);
 

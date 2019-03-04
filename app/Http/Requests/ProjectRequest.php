@@ -38,13 +38,14 @@ class ProjectRequest extends FormRequest
 
             case 'POST':
                 return [
-                    //
+                    'name' => 'required',
+                    'private' => 'boolean',
                 ];
 
             case 'PUT':
             case 'PATCH':
                 return [
-                    //
+                    'private' => 'boolean',
                 ];
 
             default:

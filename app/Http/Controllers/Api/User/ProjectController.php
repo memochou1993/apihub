@@ -68,7 +68,9 @@ class ProjectController extends ApiController
      */
     public function store()
     {
-        return $this->reposotory->storeProject($this->user, $this->request->all());
+        $project = $this->reposotory->storeProject($this->user, $this->request->all());
+
+        return new Resource($project);
     }
 
     /**
@@ -94,7 +96,9 @@ class ProjectController extends ApiController
     {
         $this->authorize('update', $project);
 
-        return $this->reposotory->updateProject($project->id, $this->request->all());
+        $project = $this->reposotory->updateProject($project->id, $this->request->all());
+
+        return new Resource($project);
     }
 
     /**
@@ -107,6 +111,8 @@ class ProjectController extends ApiController
     {
         $this->authorize('delete', $project);
 
-        return $this->reposotory->destroyProject($project->id);
+        $this->reposotory->destroyProject($project->id);
+
+        return response(null, 204);
     }
 }
