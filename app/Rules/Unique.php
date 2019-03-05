@@ -4,21 +4,22 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class With implements Rule
+class Unique implements Rule
 {
-    /**
-     * @var array
-     */
-    protected $values;
+    protected $user;
+    
+    protected $table;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($values)
+    public function __construct($user, $table)
     {
-        $this->values = $values;
+        $this->user = $user;
+
+        $this->table = $table;
     }
 
     /**
@@ -30,16 +31,10 @@ class With implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (! $value) {
-            return true;
-        }
+        $table = $this->table;
 
-        $values = explode(',', $value);
-
-        foreach ($values as $value) {
-            if (! in_array($value, $this->values, true)) {
-                return false;
-            }
+        if ($this->user->$table()->where($attribute, $value)->first()) {
+            return false;
         }
 
         return true;
@@ -52,6 +47,6 @@ class With implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be the following types: '.implode(', ', $this->values).'.';
+        return 'The :attribute has already been taken.';
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\With;
+use App\Rules\Unique;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -38,7 +39,13 @@ class ProjectRequest extends FormRequest
 
             case 'POST':
                 return [
-                    'name' => 'required',
+                    'name' => [
+                        'required',
+                        new Unique(
+                            $this->user('api'),
+                            'projects'
+                        ),
+                    ],
                     'private' => 'boolean',
                 ];
 
