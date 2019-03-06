@@ -64,7 +64,7 @@ class ProjectController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\ProjectResource
      */
     public function store()
     {
@@ -90,7 +90,7 @@ class ProjectController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \App\Project  $project
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\ProjectResource
      */
     public function update(Project $project)
     {

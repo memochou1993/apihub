@@ -35,4 +35,14 @@ class EnvironmentRepository implements EnvironmentInterface
         
         return $project->environments()->where($this->where)->with($this->with)->findOrFail($environment->id);
     }
+
+    /**
+     * @param  \App\Project  $project
+     * @param  array  $request
+     * @return \App\Environment
+     */
+    public function storeEnvironment(Project $project, array $request)
+    {
+        return $project->environments()->create($request);
+    }
 }

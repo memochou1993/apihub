@@ -14,20 +14,20 @@ class ProjectTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user;
+    protected $endpoint = '/api/users/me';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-
-        Passport::actingAs($this->user);
+        //
     }
 
     public function testIndex()
     {
-        $user = $this->user;
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
 
         factory(Project::class)->create()->each(
             function ($project) use ($user) {
@@ -37,7 +37,9 @@ class ProjectTest extends TestCase
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-        ])->json('GET', '/api/users/me/projects');
+        ])->get(
+            $this->endpoint.'/projects'
+        );
 
         $response->assertStatus(200);
 
@@ -59,13 +61,16 @@ class ProjectTest extends TestCase
 
     public function testStore()
     {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+        
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-        ])->json('POST', '/api/users/me/projects', [
-            'name' => 'new project',
-            'description' => 'new description',
-            'private' => true,
-        ]);
+        ])->post(
+            $this->endpoint.'/projects',
+            factory(Project::class)->make()->toArray()
+        );
 
         $response->assertStatus(201);
 
@@ -81,9 +86,23 @@ class ProjectTest extends TestCase
         ]);
     }
 
+    public function testCannotCreate()
+    {
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->post(
+            $this->endpoint.'/projects',
+            factory(Project::class)->make()->toArray()
+        );
+
+        $response->assertStatus(403);
+    }
+
     public function testShow()
     {
-        $user = $this->user;
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
 
         $project = factory(Project::class)->create();
 
@@ -98,7 +117,9 @@ class ProjectTest extends TestCase
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-        ])->json('GET', '/api/users/me/projects/'.$project->name.'?with=users,environments');
+        ])->get(
+            $this->endpoint.'/projects/'.$project->name.'?with=users,environments'
+        );
 
         $response->assertStatus(200);
 
@@ -134,9 +155,36 @@ class ProjectTest extends TestCase
         ]);
     }
 
+    public function testCannotView()
+    {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
+        $project = factory(Project::class)->create();
+
+        $project->each(
+            function ($project) use ($user) {
+                $project->environments()->save(
+                    factory(Environment::class)->make()
+                );
+            }
+        );
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->get(
+            $this->endpoint.'/projects/'.$project->name.'?with=users,environments'
+        );
+
+        $response->assertStatus(404);
+    }
+
     public function testUpdate()
     {
-        $user = $this->user;
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
 
         $project = factory(Project::class)->create();
 
@@ -148,11 +196,10 @@ class ProjectTest extends TestCase
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-        ])->json('PATCH', '/api/users/me/projects/'.$project->id, [
-            'name' => 'new project',
-            'description' => 'new description',
-            'private' => true,
-        ]);
+        ])->patch(
+            $this->endpoint.'/projects/'.$project->id,
+            factory(Project::class)->make()->toArray()
+        );
 
         $response->assertStatus(200);
 
@@ -168,9 +215,25 @@ class ProjectTest extends TestCase
         ]);
     }
 
+    public function testCannotUpdate()
+    {
+        $project = factory(Project::class)->create();
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->patch(
+            $this->endpoint.'/projects/'.$project->id,
+            factory(Project::class)->make()->toArray()
+        );
+
+        $response->assertStatus(403);
+    }
+
     public function testDestroy()
     {
-        $user = $this->user;
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
         
         $project = factory(Project::class)->create();
 
@@ -182,8 +245,27 @@ class ProjectTest extends TestCase
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-        ])->json('DELETE', '/api/users/me/projects/'.$project->id);
+        ])->delete(
+            $this->endpoint.'/projects/'.$project->id
+        );
 
         $response->assertStatus(204);
+    }
+
+    public function testCannotDelete()
+    {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+        
+        $project = factory(Project::class)->create();
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->delete(
+            $this->endpoint.'/projects/'.$project->id
+        );
+
+        $response->assertStatus(403);
     }
 }

@@ -63,11 +63,16 @@ class EnvironmentController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \App\Project  $project
+     * @return \App\Http\Resources\EnvironmentResource
      */
-    public function store()
+    public function store(Project $project)
     {
-        //
+        $this->authorize('create', $project);
+
+        $environment = $this->reposotory->storeEnvironment($project, $this->request->all());
+        
+        return new Resource($environment);
     }
 
     /**

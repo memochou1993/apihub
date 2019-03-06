@@ -26,11 +26,12 @@ class ProjectPolicy
      * Determine whether the user can create projects.
      *
      * @param  \App\User  $user
+     * @param  \App\Project  $project
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Project $project)
     {
-        //
+        return in_array($user->id, $project->users()->get()->pluck('id')->all());
     }
 
     /**

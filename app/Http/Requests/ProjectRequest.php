@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\With;
 use App\Rules\Unique;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -15,7 +16,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::guard('api')->check();
     }
 
     /**
