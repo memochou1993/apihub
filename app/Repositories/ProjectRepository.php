@@ -68,13 +68,9 @@ class ProjectRepository implements ProjectInterface
      * @param  array  $request
      * @return \App\Project
      */
-    public function storeProject(User $user, $request)
+    public function storeProject(User $user, array $request)
     {
-        $project = $this->project->create($request);
-
-        $project->users()->attach($user);
-
-        return $project;
+        return $user->projects()->create($request);
     }
 
     /**
