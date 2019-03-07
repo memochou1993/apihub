@@ -191,4 +191,47 @@ class EnvironmentTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function testDestroy()
+    {
+        $user = $this->user;
+
+        $environment = factory(Environment::class)->make();
+
+        $project = factory(Project::class)->create();
+        $project->each(
+            function ($project) use ($user, $environment) {
+                $project->users()->attach($user->id);
+                $project->environments()->save($environment);
+            }
+        );
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->delete(
+            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id
+        );
+
+        $response->assertStatus(204);
+    }
+
+    public function testCannotDelete()
+    {
+        $environment = factory(Environment::class)->make();
+
+        $project = factory(Project::class)->create();
+        $project->each(
+            function ($project) use ($environment) {
+                $project->environments()->save($environment);
+            }
+        );
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->delete(
+            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id
+        );
+
+        $response->assertStatus(403);
+    }
 }
