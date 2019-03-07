@@ -6,6 +6,7 @@ use App\User;
 use App\Project;
 use App\Traits\Queryable;
 use App\Contracts\ProjectInterface;
+use App\Http\Requests\ProjectRequest as Request;
 
 class ProjectRepository implements ProjectInterface
 {
@@ -65,24 +66,30 @@ class ProjectRepository implements ProjectInterface
 
     /**
      * @param  \App\User  $user
-     * @param  array  $request
+     * @param  \App\Http\Requests\ProjectRequest  $request
      * @return \App\Project
      */
-    public function storeProject(User $user, array $request)
+    public function storeProject(User $user, Request $request)
     {
-        return $user->projects()->create($request);
+        $project = $user->projects()->firstOrCreate([
+            'name' => $request->name,
+        ]);
+
+        $project->update($request->all());
+
+        return $project;
     }
 
     /**
      * @param  int  $id
-     * @param  array  $request
+     * @param  \App\Http\Requests\ProjectRequest  $request
      * @return \App\Project
      */
-    public function updateProject(int $id, array $request)
+    public function updateProject(int $id, Request $request)
     {
         $project = $this->project->find($id);
 
-        $project->update($request);
+        $project->update($request->all());
 
         return $project;
     }

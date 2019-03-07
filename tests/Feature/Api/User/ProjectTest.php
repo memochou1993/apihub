@@ -16,20 +16,23 @@ class ProjectTest extends TestCase
 
     protected $endpoint = '/api/users/me';
 
+    protected $user;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        //
+        $this->user = factory(User::class)->create();
+
+        Passport::actingAs($this->user);
     }
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
+        $user = $this->user;
 
-        Passport::actingAs($user);
-
-        factory(Project::class)->create()->each(
+        $project = factory(Project::class)->create();
+        $project->each(
             function ($project) use ($user) {
                 $project->users()->attach($user->id);
             }
@@ -41,18 +44,9 @@ class ProjectTest extends TestCase
             $this->endpoint.'/projects'
         );
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
+        $response->assertStatus(200)->assertJsonStructure([
             'data' => [
-                [
-                    'id',
-                    'name',
-                    'description',
-                    'private',
-                    'created_at',
-                    'updated_at',
-                ],
+                collect($project)->keys()->toArray(),
             ],
             'links',
             'meta',
@@ -61,57 +55,31 @@ class ProjectTest extends TestCase
 
     public function testStore()
     {
-        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
 
-        Passport::actingAs($user);
-        
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
             $this->endpoint.'/projects',
-            factory(Project::class)->make()->toArray()
+            $project->toArray()
         );
 
-        $response->assertStatus(201);
-
-        $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'name',
-                'description',
-                'private',
-                'created_at',
-                'updated_at',
-            ]
+        $response->assertStatus(201)->assertJsonStructure([
+            'data' => collect($project)->keys()->toArray(),
         ]);
-    }
-
-    public function testCannotCreate()
-    {
-        $response = $this->withHeaders([
-            'Accept' => 'application/json',
-        ])->post(
-            $this->endpoint.'/projects',
-            factory(Project::class)->make()->toArray()
-        );
-
-        $response->assertStatus(403);
     }
 
     public function testShow()
     {
-        $user = factory(User::class)->create();
+        $user = $this->user;
 
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
+            function ($project) use ($user, $environment) {
                 $project->users()->attach($user->id);
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+                $project->environments()->save($environment);
             }
         );
 
@@ -121,35 +89,14 @@ class ProjectTest extends TestCase
             $this->endpoint.'/projects/'.$project->name.'?with=users,environments'
         );
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
+        $response->assertStatus(200)->assertJsonStructure([
             'data' => [
-                'id',
-                'name',
-                'description',
-                'private',
-                'created_at',
-                'updated_at',
+                collect($project)->keys()->toArray()[0],
                 'users' => [
-                    [
-                        'id',
-                        'username',
-                        'name',
-                        'email',
-                        'created_at',
-                        'updated_at',
-                    ],
+                    collect($user)->except(['email_verified_at'])->keys()->toArray(),
                 ],
                 'environments' => [
-                    [
-                        'id',
-                        'name',
-                        'description',
-                        'variable',
-                        'created_at',
-                        'updated_at',
-                    ]
+                    collect($environment)->except(['project_id'])->keys()->toArray(),
                 ],
             ],
         ]);
@@ -157,17 +104,12 @@ class ProjectTest extends TestCase
 
     public function testCannotView()
     {
-        $user = factory(User::class)->create();
-
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+            function ($project) use ($environment) {
+                $project->environments()->save($environment);
             }
         );
 
@@ -182,12 +124,9 @@ class ProjectTest extends TestCase
 
     public function testUpdate()
     {
-        $user = factory(User::class)->create();
-
-        Passport::actingAs($user);
+        $user = $this->user;
 
         $project = factory(Project::class)->create();
-
         $project->each(
             function ($project) use ($user) {
                 $project->users()->attach($user->id);
@@ -198,20 +137,11 @@ class ProjectTest extends TestCase
             'Accept' => 'application/json',
         ])->patch(
             $this->endpoint.'/projects/'.$project->id,
-            factory(Project::class)->make()->toArray()
+            $project->toArray()
         );
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'name',
-                'description',
-                'private',
-                'created_at',
-                'updated_at',
-            ],
+        $response->assertStatus(200)->assertJsonStructure([
+            'data' => collect($project)->keys()->toArray(),
         ]);
     }
 
@@ -223,7 +153,7 @@ class ProjectTest extends TestCase
             'Accept' => 'application/json',
         ])->patch(
             $this->endpoint.'/projects/'.$project->id,
-            factory(Project::class)->make()->toArray()
+            $project->toArray()
         );
 
         $response->assertStatus(403);
@@ -231,12 +161,9 @@ class ProjectTest extends TestCase
 
     public function testDestroy()
     {
-        $user = factory(User::class)->create();
-
-        Passport::actingAs($user);
+        $user = $this->user;
         
         $project = factory(Project::class)->create();
-
         $project->each(
             function ($project) use ($user) {
                 $project->users()->attach($user->id);
@@ -254,10 +181,6 @@ class ProjectTest extends TestCase
 
     public function testCannotDelete()
     {
-        $user = factory(User::class)->create();
-
-        Passport::actingAs($user);
-        
         $project = factory(Project::class)->create();
 
         $response = $this->withHeaders([

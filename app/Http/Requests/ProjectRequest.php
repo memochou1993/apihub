@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\With;
-use App\Rules\Unique;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -16,7 +14,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('api')->check();
+        return true;
     }
 
     /**
@@ -42,10 +40,6 @@ class ProjectRequest extends FormRequest
                 return [
                     'name' => [
                         'required',
-                        new Unique(
-                            $this->user('api'),
-                            'projects'
-                        ),
                     ],
                     'private' => 'boolean',
                 ];

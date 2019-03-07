@@ -15,7 +15,7 @@ class EnvironmentController extends ApiController
     use Queryable;
 
     /**
-     * @var \Illuminate\Http\Request
+     * @var \App\Http\Requests\EnvironmentRequest
      */
     protected $request;
 
@@ -27,7 +27,7 @@ class EnvironmentController extends ApiController
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\EnvironmentRequest  $request
      * @param  \App\Contracts\EnvironmentInterface  $reposotory
      * @return void
      */
@@ -70,7 +70,7 @@ class EnvironmentController extends ApiController
     {
         $this->authorize('create', $project);
 
-        $environment = $this->reposotory->storeEnvironment($project, $this->request->all());
+        $environment = $this->reposotory->storeEnvironment($project, $this->request);
         
         return new Resource($environment);
     }
@@ -103,7 +103,7 @@ class EnvironmentController extends ApiController
         $this->authorize('update', $project);
         $this->authorize('update', $environment);
 
-        $environment = $this->reposotory->updateEnvironment($environment->id, $this->request->all());
+        $environment = $this->reposotory->updateEnvironment($environment->id, $this->request);
 
         return new Resource($environment);
     }

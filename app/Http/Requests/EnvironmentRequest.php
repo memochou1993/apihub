@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\With;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EnvironmentRequest extends FormRequest
@@ -15,7 +14,7 @@ class EnvironmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('api')->check();
+        return true;        
     }
 
     /**

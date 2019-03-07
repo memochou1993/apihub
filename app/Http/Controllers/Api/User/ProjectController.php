@@ -14,12 +14,7 @@ class ProjectController extends ApiController
     use Queryable;
 
     /**
-     * @var \App\User
-     */
-    protected $user;
-
-    /**
-     * @var \Illuminate\Http\Request
+     * @var \App\Http\Requests\ProjectRequest
      */
     protected $request;
 
@@ -31,7 +26,7 @@ class ProjectController extends ApiController
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ProjectRequest  $request
      * @param  \App\Contracts\ProjectInterface  $reposotory
      * @return void
      */
@@ -68,7 +63,7 @@ class ProjectController extends ApiController
      */
     public function store()
     {
-        $project = $this->reposotory->storeProject($this->user, $this->request->all());
+        $project = $this->reposotory->storeProject($this->user, $this->request);
 
         return new Resource($project);
     }
@@ -96,7 +91,7 @@ class ProjectController extends ApiController
     {
         $this->authorize('update', $project);
 
-        $project = $this->reposotory->updateProject($project->id, $this->request->all());
+        $project = $this->reposotory->updateProject($project->id, $this->request);
 
         return new Resource($project);
     }

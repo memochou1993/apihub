@@ -16,27 +16,28 @@ class EnvironmentTest extends TestCase
 
     protected $endpoint = '/api/users/me';
 
+    protected $user;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        //
+        $this->user = factory(User::class)->create();
+
+        Passport::actingAs($this->user);
     }
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
+        $user = $this->user;
 
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
+            function ($project) use ($user, $environment) {
                 $project->users()->attach($user->id);
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+                $project->environments()->save($environment);
             }
         );
 
@@ -46,18 +47,9 @@ class EnvironmentTest extends TestCase
             $this->endpoint.'/projects/'.$project->id.'/environments'
         );
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
+        $response->assertStatus(200)->assertJsonStructure([
             'data' => [
-                [
-                    'id',
-                    'name',
-                    'description',
-                    'variable',
-                    'created_at',
-                    'updated_at',
-                ],
+                collect($environment)->except(['project_id'])->keys()->toArray(),
             ],
             'links',
             'meta',
@@ -66,12 +58,11 @@ class EnvironmentTest extends TestCase
 
     public function testStore()
     {
-        $user = factory(User::class)->create();
+        $user = $this->user;
 
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
             function ($project) use ($user) {
                 $project->users()->attach($user->id);
@@ -82,31 +73,25 @@ class EnvironmentTest extends TestCase
             'Accept' => 'application/json',
         ])->post(
             $this->endpoint.'/projects/'.$project->id.'/environments',
-            factory(Environment::class)->make()->toArray()
+            $environment->toArray()
         );
 
-        $response->assertStatus(201);
-
-        $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'name',
-                'variable',
-                'created_at',
-                'updated_at',
-            ]
+        $response->assertStatus(201)->assertJsonStructure([
+            'data' => collect($environment)->except(['project_id'])->keys()->toArray(),
         ]);
     }
 
     public function testCannotCreate()
     {
+        $environment = factory(Environment::class)->make();
+
         $project = factory(Project::class)->create();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
             $this->endpoint.'/projects/'.$project->id.'/environments',
-            factory(Environment::class)->make()->toArray()
+            $environment->toArray()
         );
 
         $response->assertStatus(403);
@@ -114,60 +99,42 @@ class EnvironmentTest extends TestCase
 
     public function testShow()
     {
-        $user = factory(User::class)->create();
+        $user = $this->user;
 
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
+            function ($project) use ($user, $environment) {
                 $project->users()->attach($user->id);
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+                $project->environments()->save($environment);
             }
         );
-
-        $environment = $project->environments()->first();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id
+            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id.'?with=project'
         );
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
+        $response->assertStatus(200)->assertJsonStructure([
             'data' => [
-                'id',
-                'name',
-                'description',
-                'variable',
-                'created_at',
-                'updated_at',
+                collect($environment)->keys()->toArray()[0],
+                'project' => collect($project)->keys()->toArray(),
             ]
         ]);
     }
 
     public function testCannotView()
     {
-        $user = factory(User::class)->create();
-
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+            function ($project) use ($environment) {
+                $project->environments()->save($environment);
             }
         );
-
-        $environment = $project->environments()->first();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
@@ -180,67 +147,46 @@ class EnvironmentTest extends TestCase
 
     public function testUpdate()
     {
-        $user = factory(User::class)->create();
+        $user = $this->user;
 
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
+            function ($project) use ($user, $environment) {
                 $project->users()->attach($user->id);
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+                $project->environments()->save($environment);
             }
         );
-
-        $environment = $project->environments()->first();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->patch(
             $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id,
-            factory(Environment::class)->make()->toArray()
+            $environment->toArray()
         );
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'name',
-                'description',
-                'variable',
-                'created_at',
-                'updated_at',
-            ],
+        $response->assertStatus(200)->assertJsonStructure([
+            'data' => collect($environment)->except(['project_id'])->keys()->toArray(),
         ]);
     }
 
     public function testCannotUpdate()
     {
-        $user = factory(User::class)->create();
-
-        Passport::actingAs($user);
+        $environment = factory(Environment::class)->make();
 
         $project = factory(Project::class)->create();
-
         $project->each(
-            function ($project) use ($user) {
-                $project->environments()->save(
-                    factory(Environment::class)->make()
-                );
+            function ($project) use ($environment) {
+                $project->environments()->save($environment);
             }
         );
-
-        $environment = $project->environments()->first();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->patch(
             $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id,
-            factory(Environment::class)->make()->toArray()
+            $environment->toArray()
         );
 
         $response->assertStatus(403);
