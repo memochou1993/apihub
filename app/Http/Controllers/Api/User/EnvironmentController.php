@@ -84,9 +84,9 @@ class EnvironmentController extends ApiController
      */
     public function show(Project $project, Environment $environment)
     {
-        $this->authorize('view', $project);
+        $this->authorize('view', $environment);
 
-        $environments = $this->reposotory->getProjectEnvironment($project, $environment, $this->queries);
+        $environments = $this->reposotory->getProjectEnvironmentById($project, $environment->id, $this->queries);
 
         return new Resource($environments);
     }
@@ -101,6 +101,7 @@ class EnvironmentController extends ApiController
     public function update(Project $project, Environment $environment)
     {
         $this->authorize('update', $project);
+        $this->authorize('update', $environment);
 
         $environment = $this->reposotory->updateEnvironment($environment->id, $this->request->all());
 
@@ -110,10 +111,17 @@ class EnvironmentController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Project  $project
+     * @param  \App\Environment  $environment
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(Project $project, Environment $environment)
     {
-        //
+        $this->authorize('delete', $project);
+        $this->authorize('delete', $environment);
+
+        $environment = $this->reposotory->destroyEnvironment($environment->id);
+
+        return response(null, 204);
     }
 }

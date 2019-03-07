@@ -28,6 +28,17 @@ class EnvironmentRepository implements EnvironmentInterface
     }
 
     /**
+     * @param  array  $queries
+     * @return \App\Environment
+     */
+    public function getEnvironments(array $queries = [])
+    {
+        $this->castQueries($queries);
+
+        return $this->environment->where($this->where)->paginate($this->paginate);
+    }
+
+    /**
      * @param  \App\Project  $project
      * @param  array  $queries
      * @return \App\Environment
@@ -41,15 +52,15 @@ class EnvironmentRepository implements EnvironmentInterface
 
     /**
      * @param  \App\Project  $project
-     * @param  \App\Environment  $environment
+     * @param  int  $id
      * @param  array  $queries
      * @return \App\Environment
      */
-    public function getProjectEnvironment(Project $project, Environment $environment, array $queries = [])
+    public function getProjectEnvironmentById(Project $project, int $id, array $queries = [])
     {
         $this->castQueries($queries);
         
-        return $project->environments()->where($this->where)->with($this->with)->findOrFail($environment->id);
+        return $project->environments()->where($this->where)->with($this->with)->findOrFail($id);
     }
 
     /**
@@ -72,6 +83,19 @@ class EnvironmentRepository implements EnvironmentInterface
         $environment = $this->environment->find($id);
 
         $environment->update($request);
+
+        return $environment;
+    }
+
+    /**
+     * @param  int  $id
+     * @return \App\Environment
+     */
+    public function destroyEnvironment(int $id)
+    {
+        $environment = $this->environment->find($id);
+
+        $environment->delete();
 
         return $environment;
     }
