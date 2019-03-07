@@ -63,7 +63,7 @@ class ProjectController extends ApiController
      */
     public function store()
     {
-        $project = $this->reposotory->storeProject($this->user, $this->request);
+        $project = $this->reposotory->storeProject($this->user, $this->request->all());
 
         return new Resource($project);
     }
@@ -91,7 +91,7 @@ class ProjectController extends ApiController
     {
         $this->authorize('update', $project);
 
-        $project = $this->reposotory->updateProject($project->id, $this->request);
+        $project = $this->reposotory->updateProject($project->id, $this->request->all());
 
         return new Resource($project);
     }

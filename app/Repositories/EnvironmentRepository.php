@@ -6,7 +6,6 @@ use App\Project;
 use App\Environment;
 use App\Traits\Queryable;
 use App\Contracts\EnvironmentInterface;
-use App\Http\Requests\EnvironmentRequest as Request;
 
 class EnvironmentRepository implements EnvironmentInterface
 {
@@ -66,24 +65,24 @@ class EnvironmentRepository implements EnvironmentInterface
 
     /**
      * @param  \App\Project  $project
-     * @param  \App\Http\Requests\EnvironmentRequest  $request
+     * @param  array  $request
      * @return \App\Environment
      */
-    public function storeEnvironment(Project $project, Request $request)
+    public function storeEnvironment(Project $project, array $request)
     {
-        return $project->environments()->create($request->all());
+        return $project->environments()->create($request);
     }
 
     /**
      * @param  int  $id
-     * @param  \App\Http\Requests\EnvironmentRequest  $request
+     * @param  array  $request
      * @return \App\Environment
      */
-    public function updateEnvironment(int $id, Request $request)
+    public function updateEnvironment(int $id, array $request)
     {
         $environment = $this->environment->find($id);
 
-        $environment->update($request->all());
+        $environment->update($request);
 
         return $environment;
     }

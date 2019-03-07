@@ -70,7 +70,7 @@ class EnvironmentController extends ApiController
     {
         $this->authorize('create', $project);
 
-        $environment = $this->reposotory->storeEnvironment($project, $this->request);
+        $environment = $this->reposotory->storeEnvironment($project, $this->request->all());
         
         return new Resource($environment);
     }
@@ -103,7 +103,7 @@ class EnvironmentController extends ApiController
         $this->authorize('update', $project);
         $this->authorize('update', $environment);
 
-        $environment = $this->reposotory->updateEnvironment($environment->id, $this->request);
+        $environment = $this->reposotory->updateEnvironment($environment->id, $this->request->all());
 
         return new Resource($environment);
     }
