@@ -12,6 +12,22 @@ class EnvironmentRepository implements EnvironmentInterface
     use Queryable;
 
     /**
+     * @var \App\Environment
+     */
+    protected $environment;
+
+    /**
+     * Create a new repository instance.
+     *
+     * @param  \App\Environment  $environment
+     * @return void
+     */
+    public function __construct(Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
      * @param  \App\Project  $project
      * @param  array  $queries
      * @return \App\Environment
@@ -44,5 +60,19 @@ class EnvironmentRepository implements EnvironmentInterface
     public function storeEnvironment(Project $project, array $request)
     {
         return $project->environments()->create($request);
+    }
+
+    /**
+     * @param  int  $id
+     * @param  array  $request
+     * @return \App\Environment
+     */
+    public function updateEnvironment(int $id, array $request)
+    {
+        $environment = $this->environment->find($id);
+
+        $environment->update($request);
+
+        return $environment;
     }
 }

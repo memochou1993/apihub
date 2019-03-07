@@ -11,8 +11,10 @@ class Environment extends Model
      *
      * @var array
      */
-    protected $guarded = [];
-    
+    protected $guarded = [
+        'project_id',
+    ];
+
     /**
      * Get the project that the environments belongs to.
      * 

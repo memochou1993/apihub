@@ -177,4 +177,72 @@ class EnvironmentTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function testUpdate()
+    {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
+        $project = factory(Project::class)->create();
+
+        $project->each(
+            function ($project) use ($user) {
+                $project->users()->attach($user->id);
+                $project->environments()->save(
+                    factory(Environment::class)->make()
+                );
+            }
+        );
+
+        $environment = $project->environments()->first();
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->patch(
+            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id,
+            factory(Environment::class)->make()->toArray()
+        );
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'description',
+                'variable',
+                'created_at',
+                'updated_at',
+            ],
+        ]);
+    }
+
+    public function testCannotUpdate()
+    {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
+        $project = factory(Project::class)->create();
+
+        $project->each(
+            function ($project) use ($user) {
+                $project->environments()->save(
+                    factory(Environment::class)->make()
+                );
+            }
+        );
+
+        $environment = $project->environments()->first();
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->patch(
+            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id,
+            factory(Environment::class)->make()->toArray()
+        );
+
+        $response->assertStatus(403);
+    }
 }

@@ -94,11 +94,17 @@ class EnvironmentController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \App\Project  $project
+     * @param  \App\Environment  $environment
+     * @return \App\Http\Resources\EnvironmentResource
      */
-    public function update()
+    public function update(Project $project, Environment $environment)
     {
-        //
+        $this->authorize('update', $project);
+
+        $environment = $this->reposotory->updateEnvironment($environment->id, $this->request->all());
+
+        return new Resource($environment);
     }
 
     /**

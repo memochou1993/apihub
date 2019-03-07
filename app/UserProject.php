@@ -12,4 +12,11 @@ class UserProject extends Model
      * @var string
      */
     protected $table = 'user_project';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [];
 }
