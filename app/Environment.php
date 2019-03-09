@@ -16,6 +16,16 @@ class Environment extends Model
     ];
 
     /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return true;
+    }
+
+    /**
      * Get the project that the environment belongs to.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

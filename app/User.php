@@ -39,7 +39,17 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the projects that belong to the user.
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return true;
+    }
+
+    /**
+     * The projects that belong to the user.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

@@ -2,10 +2,13 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -16,7 +19,26 @@ class Project extends Model
     ];
 
     /**
-     * Get the users that belong to the project.
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'private' => 'boolean',
+    ];
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return ! $this->private;
+    }
+
+    /**
+     * The users that belong to the project.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

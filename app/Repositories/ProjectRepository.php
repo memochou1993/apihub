@@ -69,11 +69,11 @@ class ProjectRepository implements ProjectInterface
      */
     public function storeProject(User $user, array $request)
     {
-        $project = $user->projects()->firstOrCreate([
+        $project = $user->projects()->where([
             'name' => $request['name'],
-        ]);
+        ])->first() ?? $user->projects()->create($request);
 
-        $project->update($request);
+        $project->shouldBeSearchable();
 
         return $project;
     }

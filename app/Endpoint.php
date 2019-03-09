@@ -16,6 +16,16 @@ class Endpoint extends Model
     ];
 
     /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return true;
+    }
+
+    /**
      * Get the project that the endpoint belongs to.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
