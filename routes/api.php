@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->namespace('Api\User')->prefix('users/me')->group(function () {
     Route::resource('projects', 'ProjectController');
     Route::resource('projects.environments', 'EnvironmentController');
+    Route::resource('projects.endpoints', 'EndpointController');
 });

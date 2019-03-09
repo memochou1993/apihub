@@ -2,17 +2,18 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'name', 'description', 'private',
+    ];
 
     /**
      * Get the users that belong to the project.
@@ -32,5 +33,15 @@ class Project extends Model
     public function environments()
     {
         return $this->hasMany(Environment::class);
+    }
+
+    /**
+     * Get the endpoints for the project.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function endpoints()
+    {
+        return $this->hasMany(Endpoint::class);
     }
 }

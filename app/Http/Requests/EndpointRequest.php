@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\With;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EnvironmentRequest extends FormRequest
+class EndpointRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,15 +37,15 @@ class EnvironmentRequest extends FormRequest
 
             case 'POST':
                 return [
+                    'method' => 'required',
                     'name' => 'required',
-                    'variable' => 'required',
                 ];
 
             case 'PUT':
             case 'PATCH':
                 return [
+                    'method' => 'required',
                     'name' => 'required',
-                    'variable' => 'required',
                 ];
 
             default:
