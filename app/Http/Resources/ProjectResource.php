@@ -27,6 +27,7 @@ class ProjectResource extends JsonResource
             'updated_at' => $convertDate($this->updated_at),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'environments' => EnvironmentResource::collection($this->whenLoaded('environments')),
+            'endpoints' => EndpointResource::collection($this->whenLoaded('endpoints')),
         ];
     }
 }

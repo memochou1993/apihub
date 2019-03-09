@@ -30,8 +30,7 @@ class ProjectRequest extends FormRequest
             case 'GET':
                 return [
                     'with' =>  new With([
-                        'users',
-                        'environments',
+                        'users', 'environments', 'endpoints',
                     ]),
                     'paginate' => 'min:1|integer',
                 ];
