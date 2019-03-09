@@ -84,7 +84,7 @@ class EnvironmentController extends ApiController
      */
     public function show(Project $project, Environment $environment)
     {
-        $this->authorize('update', $project);
+        $this->authorize('view', $project);
         $this->authorize('view', $environment);
 
         $environments = $this->reposotory->getEnvironment($environment->id, $this->queries);
