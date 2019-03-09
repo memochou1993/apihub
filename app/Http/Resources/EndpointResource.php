@@ -14,13 +14,9 @@ class EndpointResource extends JsonResource
      */
     public function toArray($request)
     {
-        $created_at = $request->diffForHumans
-            ? $this->created_at->diffForHumans()
-            : $this->created_at->toDateTimeString();
-
-        $updated_at = $request->diffForHumans
-            ? $this->updated_at->diffForHumans()
-            : $this->updated_at->toDateTimeString();
+        $convertDate = function ($date) use ($request) {
+            return $request->diffForHumans ? $date->diffForHumans() : $date->toDateTimeString();
+        };
 
         return [
             'id' => $this->id,
@@ -28,8 +24,8 @@ class EndpointResource extends JsonResource
             'method' => $this->method,
             'name' => $this->name,
             'description' => $this->description,
-            'created_at' => $created_at,
-            'updated_at' => $updated_at,
+            'created_at' => $convertDate($this->created_at),
+            'updated_at' => $convertDate($this->updated_at),
             'project' => new ProjectResource($this->whenLoaded('project')),
         ];
     }
