@@ -51,7 +51,7 @@ class ProjectController extends ApiController
      */
     public function index()
     {
-        $projects = $this->reposotory->getUserProjects($this->user, $this->queries);
+        $projects = $this->reposotory->getProjectsByUser($this->user, $this->queries);
 
         return Resource::collection($projects);
     }
@@ -71,12 +71,14 @@ class ProjectController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  string  $name
+     * @param  \App\Project  $project
      * @return \App\Http\Resources\ProjectResource
      */
-    public function show(string $name)
+    public function show(Project $project)
     {
-        $project = $this->reposotory->getUserProjectByName($this->user, $name, $this->queries);
+        $this->authorize('view', $project);
+
+        $project = $this->reposotory->getProject($project->id, $this->queries);
 
         return new Resource($project);
     }

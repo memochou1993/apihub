@@ -55,7 +55,7 @@ class EnvironmentController extends ApiController
     {
         $this->authorize('view', $project);
 
-        $environments = $this->reposotory->getProjectEnvironments($project, $this->queries);
+        $environments = $this->reposotory->getEnvironmentsByProject($project, $this->queries);
 
         return Resource::collection($environments);
     }
@@ -84,9 +84,10 @@ class EnvironmentController extends ApiController
      */
     public function show(Project $project, Environment $environment)
     {
+        $this->authorize('update', $project);
         $this->authorize('view', $environment);
 
-        $environments = $this->reposotory->getProjectEnvironmentById($project, $environment->id, $this->queries);
+        $environments = $this->reposotory->getEnvironment($environment->id, $this->queries);
 
         return new Resource($environments);
     }

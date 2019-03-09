@@ -86,7 +86,7 @@ class ProjectTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->name.'?with=users,environments'
+            $this->endpoint.'/projects/'.$project->id.'?with=users,environments'
         );
 
         $response->assertStatus(200)->assertJsonStructure([
@@ -116,10 +116,10 @@ class ProjectTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->name.'?with=users,environments'
+            $this->endpoint.'/projects/'.$project->id.'?with=users,environments'
         );
 
-        $response->assertStatus(404);
+        $response->assertStatus(403);
     }
 
     public function testUpdate()

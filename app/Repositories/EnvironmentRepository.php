@@ -43,7 +43,7 @@ class EnvironmentRepository implements EnvironmentInterface
      * @param  array  $queries
      * @return \App\Environment
      */
-    public function getProjectEnvironments(Project $project, array $queries = [])
+    public function getEnvironmentsByProject(Project $project, array $queries = [])
     {
         $this->castQueries($queries);
 
@@ -51,16 +51,15 @@ class EnvironmentRepository implements EnvironmentInterface
     }
 
     /**
-     * @param  \App\Project  $project
      * @param  int  $id
      * @param  array  $queries
      * @return \App\Environment
      */
-    public function getProjectEnvironmentById(Project $project, int $id, array $queries = [])
+    public function getEnvironment(int $id, array $queries = [])
     {
         $this->castQueries($queries);
-        
-        return $project->environments()->where($this->where)->with($this->with)->findOrFail($id);
+
+        return $this->environment->where($this->where)->with($this->with)->findOrFail($id);
     }
 
     /**

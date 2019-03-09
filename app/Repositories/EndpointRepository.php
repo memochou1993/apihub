@@ -43,7 +43,7 @@ class EndpointRepository implements EndpointInterface
      * @param  array  $queries
      * @return \App\Endpoint
      */
-    public function getProjectEndpoints(Project $project, array $queries = [])
+    public function getEndpointsByProject(Project $project, array $queries = [])
     {
         $this->castQueries($queries);
 
@@ -51,16 +51,15 @@ class EndpointRepository implements EndpointInterface
     }
 
     /**
-     * @param  \App\Project  $project
      * @param  int  $id
      * @param  array  $queries
      * @return \App\Endpoint
      */
-    public function getProjectEndpointById(Project $project, int $id, array $queries = [])
+    public function getEndpoint(int $id, array $queries = [])
     {
         $this->castQueries($queries);
         
-        return $project->endpoints()->where($this->where)->with($this->with)->findOrFail($id);
+        return $this->endpoint->where($this->where)->with($this->with)->findOrFail($id);
     }
 
     /**

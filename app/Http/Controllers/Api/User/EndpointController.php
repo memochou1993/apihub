@@ -55,7 +55,7 @@ class EndpointController extends ApiController
     {
         $this->authorize('view', $project);
 
-        $endpoints = $this->reposotory->getProjectEndpoints($project, $this->queries);
+        $endpoints = $this->reposotory->getEndpointsByProject($project, $this->queries);
 
         return Resource::collection($endpoints);
     }
@@ -84,9 +84,10 @@ class EndpointController extends ApiController
      */
     public function show(Project $project, Endpoint $endpoint)
     {
+        $this->authorize('view', $project);
         $this->authorize('view', $endpoint);
 
-        $endpoints = $this->reposotory->getProjectEndpointById($project, $endpoint->id, $this->queries);
+        $endpoints = $this->reposotory->getEndpoint($endpoint->id, $this->queries);
 
         return new Resource($endpoints);
     }
