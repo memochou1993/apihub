@@ -55,7 +55,6 @@ class CallController extends ApiController
      */
     public function index(Project $project, Endpoint $endpoint)
     {
-        $this->authorize('view', $project);
         $this->authorize('view', $endpoint);
 
         $calls = $this->reposotory->getCallsByEndpoint($endpoint, $this->queries);
@@ -72,7 +71,6 @@ class CallController extends ApiController
      */
     public function store(Project $project, Endpoint $endpoint)
     {
-        $this->authorize('create', $project);
         $this->authorize('create', $endpoint);
 
         $call = $this->reposotory->storeCall($endpoint, $this->request->all());
@@ -90,8 +88,6 @@ class CallController extends ApiController
      */
     public function show(Project $project, Endpoint $endpoint, Call $call)
     {
-        $this->authorize('view', $project);
-        $this->authorize('view', $endpoint);
         $this->authorize('view', $call);
 
         $calls = $this->reposotory->getCall($call->id, $this->queries);
@@ -109,8 +105,6 @@ class CallController extends ApiController
      */
     public function update(Project $project, Endpoint $endpoint, Call $call)
     {
-        $this->authorize('update', $project);
-        $this->authorize('update', $endpoint);
         $this->authorize('update', $call);
 
         $call = $this->reposotory->updateCall($call->id, $this->request->all());
@@ -128,8 +122,6 @@ class CallController extends ApiController
      */
     public function destroy(Project $project, Endpoint $endpoint, Call $call)
     {
-        $this->authorize('delete', $project);
-        $this->authorize('delete', $endpoint);
         $this->authorize('delete', $call);
 
         $call = $this->reposotory->destroyCall($call->id);
