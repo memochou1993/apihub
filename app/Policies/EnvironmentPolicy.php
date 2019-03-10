@@ -19,18 +19,19 @@ class EnvironmentPolicy
      */
     public function view(User $user, Environment $environment)
     {
-        return in_array($user->id, $environment->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $environment->project->users->pluck('id')->all());
     }
 
     /**
      * Determine whether the user can create environments.
      *
      * @param  \App\User  $user
+     * @param  \App\Environment  $environment
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Environment $environment)
     {
-        //
+        return in_array($user->id, $environment->project->users->pluck('id')->all());
     }
 
     /**
@@ -42,7 +43,7 @@ class EnvironmentPolicy
      */
     public function update(User $user, Environment $environment)
     {
-        return in_array($user->id, $environment->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $environment->project->users->pluck('id')->all());
     }
 
     /**
@@ -54,7 +55,7 @@ class EnvironmentPolicy
      */
     public function delete(User $user, Environment $environment)
     {
-        return in_array($user->id, $environment->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $environment->project->users->pluck('id')->all());
     }
 
     /**

@@ -19,7 +19,7 @@ class CallPolicy
      */
     public function view(User $user, Call $call)
     {
-        return in_array($user->id, $call->endpoint()->first()->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
@@ -31,7 +31,7 @@ class CallPolicy
      */
     public function create(User $user, Call $call)
     {
-        return in_array($user->id, $call->endpoint()->first()->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
@@ -43,7 +43,7 @@ class CallPolicy
      */
     public function update(User $user, Call $call)
     {
-        return in_array($user->id, $call->endpoint()->first()->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
@@ -55,7 +55,7 @@ class CallPolicy
      */
     public function delete(User $user, Call $call)
     {
-        return in_array($user->id, $call->endpoint()->first()->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**

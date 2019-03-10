@@ -19,7 +19,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project)
     {
-        return in_array($user->id, $project->users()->get()->pluck('id')->all());
+        return in_array($user->id, $project->users->pluck('id')->all());
     }
 
     /**
@@ -31,7 +31,7 @@ class ProjectPolicy
      */
     public function create(User $user, Project $project)
     {
-        return in_array($user->id, $project->users()->get()->pluck('id')->all());
+        return in_array($user->id, $project->users->pluck('id')->all());
     }
 
     /**
@@ -43,7 +43,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return in_array($user->id, $project->users()->get()->pluck('id')->all());
+        return in_array($user->id, $project->users->pluck('id')->all());
     }
 
     /**
@@ -55,7 +55,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        return in_array($user->id, $project->users()->get()->pluck('id')->all());
+        return in_array($user->id, $project->users->pluck('id')->all());
     }
 
     /**

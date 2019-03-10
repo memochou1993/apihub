@@ -66,4 +66,12 @@ class Project extends Model
     {
         return $this->hasMany(Endpoint::class);
     }
+
+    /**
+     * Get the calls for the project.
+     */
+    public function calls()
+    {
+        return $this->hasManyThrough(Call::class, Endpoint::class);
+    }
 }

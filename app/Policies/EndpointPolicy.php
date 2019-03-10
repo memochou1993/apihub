@@ -19,7 +19,7 @@ class EndpointPolicy
      */
     public function view(User $user, Endpoint $endpoint)
     {
-        return in_array($user->id, $endpoint->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $endpoint->project->users->pluck('id')->all());
     }
 
     /**
@@ -31,7 +31,7 @@ class EndpointPolicy
      */
     public function create(User $user, Endpoint $endpoint)
     {
-        return in_array($user->id, $endpoint->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $endpoint->project->users->pluck('id')->all());
     }
 
     /**
@@ -43,7 +43,7 @@ class EndpointPolicy
      */
     public function update(User $user, Endpoint $endpoint)
     {
-        return in_array($user->id, $endpoint->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $endpoint->project->users->pluck('id')->all());
     }
 
     /**
@@ -55,7 +55,7 @@ class EndpointPolicy
      */
     public function delete(User $user, Endpoint $endpoint)
     {
-        return in_array($user->id, $endpoint->project()->first()->users()->get()->pluck('id')->all());
+        return in_array($user->id, $endpoint->project->users->pluck('id')->all());
     }
 
     /**
