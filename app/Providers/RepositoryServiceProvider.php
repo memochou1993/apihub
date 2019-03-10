@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Contracts\ProjectInterface;
-use App\Contracts\EndpointInterface;
 use App\Contracts\EnvironmentInterface;
+use App\Contracts\EndpointInterface;
+use App\Contracts\CallInterface;
 use App\Repositories\ProjectRepository;
-use App\Repositories\EndpointRepository;
 use App\Repositories\EnvironmentRepository;
+use App\Repositories\EndpointRepository;
+use App\Repositories\CallRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -39,6 +41,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProjectInterface::class, ProjectRepository::class);
         $this->app->bind(EnvironmentInterface::class, EnvironmentRepository::class);
         $this->app->bind(EndpointInterface::class, EndpointRepository::class);
+        $this->app->bind(CallInterface::class, CallRepository::class);
     }
 
     /**
@@ -52,6 +55,7 @@ class RepositoryServiceProvider extends ServiceProvider
             ProjectInterface::class,
             EnvironmentInterface::class,
             EndpointInterface::class,
+            CallInterface::class,
         ];
     }
 }

@@ -26,11 +26,12 @@ class EndpointPolicy
      * Determine whether the user can create endpoints.
      *
      * @param  \App\User  $user
+     * @param  \App\Endpoint  $endpoint
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Endpoint $endpoint)
     {
-        //
+        return in_array($user->id, $endpoint->project()->first()->users()->get()->pluck('id')->all());
     }
 
     /**
