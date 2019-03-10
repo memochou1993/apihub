@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Call;
-use App\Project;
 use App\Endpoint;
 use App\Traits\Queryable;
 use App\Http\Controllers\Api\ApiController;
@@ -49,11 +48,10 @@ class CallController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Project  $project
      * @param  \App\Endpoint  $endpoint
      * @return \App\Http\Resources\CallResource
      */
-    public function index(Project $project, Endpoint $endpoint)
+    public function index(Endpoint $endpoint)
     {
         $this->authorize('view', $endpoint);
 
@@ -65,11 +63,10 @@ class CallController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Project  $project
      * @param  \App\Endpoint  $endpoint
      * @return \App\Http\Resources\CallResource
      */
-    public function store(Project $project, Endpoint $endpoint)
+    public function store(Endpoint $endpoint)
     {
         $this->authorize('create', $endpoint);
 
@@ -81,12 +78,11 @@ class CallController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Project  $project
      * @param  \App\Endpoint  $endpoint
      * @param  \App\Call  $call
      * @return \App\Http\Resources\CallResource
      */
-    public function show(Project $project, Endpoint $endpoint, Call $call)
+    public function show(Endpoint $endpoint, Call $call)
     {
         $this->authorize('view', $call);
 
@@ -98,12 +94,11 @@ class CallController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Project  $project
      * @param  \App\Endpoint  $endpoint
      * @param  \App\Call  $call
      * @return \App\Http\Resources\CallResource
      */
-    public function update(Project $project, Endpoint $endpoint, Call $call)
+    public function update(Endpoint $endpoint, Call $call)
     {
         $this->authorize('update', $call);
 
@@ -115,12 +110,11 @@ class CallController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Project  $project
      * @param  \App\Endpoint  $endpoint
      * @param  \App\Call  $call
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project, Endpoint $endpoint, Call $call)
+    public function destroy(Endpoint $endpoint, Call $call)
     {
         $this->authorize('delete', $call);
 

@@ -21,5 +21,5 @@ Route::middleware('auth:api')->namespace('Api\User')->prefix('users/me')->group(
     Route::resource('projects', 'ProjectController');
     Route::resource('projects.environments', 'EnvironmentController');
     Route::resource('projects.endpoints', 'EndpointController');
-    Route::resource('projects.endpoints.calls', 'CallController');
+    Route::resource('endpoints.calls', 'CallController');
 });

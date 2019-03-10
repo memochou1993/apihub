@@ -58,7 +58,7 @@ class CallRepository implements CallInterface
     public function getCall(int $id, array $queries = [])
     {
         $this->castQueries($queries);
-        
+
         return $this->call->where($this->where)->with($this->with)->findOrFail($id);
     }
 
