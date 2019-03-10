@@ -84,7 +84,7 @@ class CallController extends ApiController
      */
     public function show(Endpoint $endpoint, Call $call)
     {
-        $this->authorize('view', $call);
+        $this->authorize('view', [$endpoint, $call]);
 
         $calls = $this->reposotory->getCall($call->id, $this->queries);
 
@@ -100,7 +100,7 @@ class CallController extends ApiController
      */
     public function update(Endpoint $endpoint, Call $call)
     {
-        $this->authorize('update', $call);
+        $this->authorize('view', [$endpoint, $call]);
 
         $call = $this->reposotory->updateCall($call->id, $this->request->all());
 
@@ -116,7 +116,7 @@ class CallController extends ApiController
      */
     public function destroy(Endpoint $endpoint, Call $call)
     {
-        $this->authorize('delete', $call);
+        $this->authorize('view', [$endpoint, $call]);
 
         $call = $this->reposotory->destroyCall($call->id);
 
