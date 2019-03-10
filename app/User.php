@@ -49,7 +49,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The projects that belong to the user.
+     * Get the projects that belong to the user.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

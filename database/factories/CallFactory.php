@@ -19,5 +19,6 @@ $factory->define(App\Call::class, function (Faker $faker) {
             ],
             'body' => [],
         ]),
+        'endpoint_id' => $faker->numberBetween(1, config('seeds.endpoints.number')),
     ];
 });

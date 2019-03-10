@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Call;
 use Illuminate\Database\Eloquent\Model;
 
 class Endpoint extends Model
@@ -33,5 +34,15 @@ class Endpoint extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * Get the calls for the endpoint.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany(Call::class);
     }
 }

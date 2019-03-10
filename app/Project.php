@@ -38,7 +38,7 @@ class Project extends Model
     }
 
     /**
-     * The users that belong to the project.
+     * Get the users that belong to the project.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
