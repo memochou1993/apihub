@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EndpointResource extends JsonResource
+class CallResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,14 +20,11 @@ class EndpointResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'group' => $this->group,
-            'method' => $this->method,
-            'name' => $this->name,
-            'description' => $this->description,
+            'request' => $this->request,
+            'response' => $this->response,
             'created_at' => $convertDate($this->created_at),
             'updated_at' => $convertDate($this->updated_at),
-            'project' => new ProjectResource($this->whenLoaded('project')),
-            'calls' => CallResource::collection($this->whenLoaded('calls')),
+            'endpoint' => new EndpointResource($this->whenLoaded('endpoint')),
         ];
     }
 }

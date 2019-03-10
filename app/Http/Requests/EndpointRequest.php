@@ -30,7 +30,7 @@ class EndpointRequest extends FormRequest
             case 'GET':
                 return [
                     'with' =>  new With([
-                        'project',
+                        'project', 'calls',
                     ]),
                     'paginate' => 'min:1|integer',
                 ];

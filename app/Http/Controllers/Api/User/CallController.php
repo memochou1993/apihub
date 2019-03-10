@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\User;
 
 use App\Call;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
 
-class CallController extends Controller
+class CallController extends ApiController
 {
     /**
      * Display a listing of the resource.
