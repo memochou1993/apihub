@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(ProjectsTableSeeder::class);
         $this->call(UsersProjectsTableSeeder::class);
-        $this->call(EnvironmentTableSeeder::class);
-        $this->call(EndpointTableSeeder::class);
+        $this->call(EnvironmentsTableSeeder::class);
+        $this->call(EndpointsTableSeeder::class);
+        $this->call(CallsTableSeeder::class);
     }
 }

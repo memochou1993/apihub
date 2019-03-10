@@ -1,9 +1,9 @@
 <?php
 
-use App\Endpoint;
+use App\Call;
 use Illuminate\Database\Seeder;
 
-class EndpointTableSeeder extends Seeder
+class CallsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class EndpointTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Endpoint::class, config('seeds.endpoints'))->create();
+        factory(Call::class, config('seeds.calls.number'))->create();
     }
 }

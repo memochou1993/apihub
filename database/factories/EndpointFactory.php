@@ -9,6 +9,6 @@ $factory->define(App\Endpoint::class, function (Faker $faker) {
         ]),
         'name' => $faker->bothify('##??'),
         'description' => $faker->sentence(),
-        'project_id' => $faker->numberBetween(1, config('seeds.projects')),
+        'project_id' => $faker->numberBetween(1, config('seeds.projects.number')),
     ];
 });
