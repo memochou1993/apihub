@@ -26,30 +26,17 @@ class AuthController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function login()
     {
-        $credentials = $this->request->only('email', 'password');
-
-        if(! Auth::attempt($credentials)) {
-            return response([
-                'message' => 'The user credentials were incorrect.'
-            ], 401);
-        }
-
-        $token_result = $this->request->user()->createToken('Personal Access Token');
-
-        $token = $token_result->token;
-
-        if ($this->request->remember_me) {
-            $token->expires_at = now()->addDays(7);
-            $token->save();
-        }
-
-        return response([
-            'token_type' => 'Bearer',
-            'expires_at' => $token->expires_at->toDateTimeString(),
-            'access_token' => $token_result->accessToken,
-        ]);
+        //
     }
 
     /**
