@@ -14,7 +14,7 @@ class CallRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;        
+        return true;
     }
 
     /**
@@ -29,21 +29,28 @@ class CallRequest extends FormRequest
         switch($method) {
             case 'GET':
                 return [
-                    'with' =>  new With([
+                    'with' => new With([
                         'endpoint',
                     ]),
-                    'paginate' => 'min:1|integer',
+                    'paginate' => [
+                        'min:1',
+                        'integer',
+                    ],
                 ];
 
             case 'POST':
                 return [
-                    'request' => 'required',
+                    'request' => [
+                        'required',
+                   ],
                 ];
 
             case 'PUT':
             case 'PATCH':
                 return [
-                    'request' => 'required',
+                    'request' => [
+                        'required',
+                   ],
                 ];
 
             default:

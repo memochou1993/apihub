@@ -29,10 +29,13 @@ class ProjectRequest extends FormRequest
         switch($method) {
             case 'GET':
                 return [
-                    'with' =>  new With([
+                    'with' => new With([
                         'users', 'environments', 'endpoints', 'calls',
                     ]),
-                    'paginate' => 'min:1|integer',
+                    'paginate' => [
+                        'min:1',
+                        'integer',
+                    ],
                 ];
 
             case 'POST':
@@ -40,13 +43,20 @@ class ProjectRequest extends FormRequest
                     'name' => [
                         'required',
                     ],
-                    'private' => 'boolean',
+                    'private' => [
+                        'boolean',
+                    ],
                 ];
 
             case 'PUT':
             case 'PATCH':
                 return [
-                    'private' => 'boolean',
+                    'name' => [
+                        'required',
+                    ],
+                    'private' => [
+                        'boolean',
+                    ],
                 ];
 
             default:

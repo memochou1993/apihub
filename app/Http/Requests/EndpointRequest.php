@@ -14,7 +14,7 @@ class EndpointRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;        
+        return true;
     }
 
     /**
@@ -29,23 +29,35 @@ class EndpointRequest extends FormRequest
         switch($method) {
             case 'GET':
                 return [
-                    'with' =>  new With([
+                    'with' => new With([
                         'project', 'calls',
                     ]),
-                    'paginate' => 'min:1|integer',
+                    'paginate' => [
+                        'min:1',
+                        'integer',
+                    ],
                 ];
 
             case 'POST':
                 return [
-                    'method' => 'required',
-                    'name' => 'required',
+                    'method' => [
+                        'required',
+                        'in:GET,HEAD,POST,PUT,PATCH,DELETE',
+                   ],
+                    'name' => [
+                        'required',
+                   ],
                 ];
 
             case 'PUT':
             case 'PATCH':
                 return [
-                    'method' => 'required',
-                    'name' => 'required',
+                    'method' => [
+                        'required',
+                   ],
+                    'name' => [
+                        'required',
+                   ],
                 ];
 
             default:

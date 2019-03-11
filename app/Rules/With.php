@@ -52,6 +52,6 @@ class With implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be the following types: '.implode(', ', $this->values).'.';
+        return 'The :attribute must be one of the following types: '.implode(', ', $this->values).'.';
     }
 }

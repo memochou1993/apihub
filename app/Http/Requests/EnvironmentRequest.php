@@ -14,7 +14,7 @@ class EnvironmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;        
+        return true;
     }
 
     /**
@@ -29,23 +29,34 @@ class EnvironmentRequest extends FormRequest
         switch($method) {
             case 'GET':
                 return [
-                    'with' =>  new With([
+                    'with' => new With([
                         'project',
                     ]),
-                    'paginate' => 'min:1|integer',
+                    'paginate' => [
+                        'min:1',
+                        'integer',
+                    ],
                 ];
 
             case 'POST':
                 return [
-                    'name' => 'required',
-                    'variable' => 'required',
+                    'name' => [
+                        'required',
+                   ],
+                    'variable' => [
+                        'required',
+                   ],
                 ];
 
             case 'PUT':
             case 'PATCH':
                 return [
-                    'name' => 'required',
-                    'variable' => 'required',
+                    'name' => [
+                        'required',
+                   ],
+                    'variable' => [
+                        'required',
+                   ],
                 ];
 
             default:
