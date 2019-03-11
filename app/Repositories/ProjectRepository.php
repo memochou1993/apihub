@@ -28,6 +28,15 @@ class ProjectRepository implements ProjectInterface
     }
 
     /**
+     * @param  string  $q
+     * @return \App\Project
+     */
+    public function searchProjects(string $q)
+    {
+        return $this->project->search($q)->paginate($this->paginate);
+    }
+
+    /**
      * @param  array  $queries
      * @return \App\Project
      */

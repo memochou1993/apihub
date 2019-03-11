@@ -25,7 +25,7 @@ class Environment extends Model
      */
     public function shouldBeSearchable()
     {
-        return true;
+        return false;
     }
 
     /**
