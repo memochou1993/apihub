@@ -28,6 +28,7 @@ class ProjectResource extends JsonResource
             'users' => UserResource::collection($this->whenLoaded('users')),
             'environments' => EnvironmentResource::collection($this->whenLoaded('environments')),
             'endpoints' => EndpointResource::collection($this->whenLoaded('endpoints')),
+            'calls' => CallResource::collection($this->whenLoaded('calls')),
         ];
     }
 }

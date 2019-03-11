@@ -93,8 +93,7 @@ class ProjectTest extends TestCase
         );
 
         $response->assertStatus(200)->assertJsonStructure([
-            'data' => [
-                collect($project)->keys()->toArray()[0],
+            'data' => collect($project)->keys()->merge([
                 'users' => [
                     collect($user)->except(['email_verified_at'])->keys()->toArray(),
                 ],
@@ -104,7 +103,7 @@ class ProjectTest extends TestCase
                 'endpoints' => [
                     collect($endpoint)->except(['project_id'])->keys()->toArray(),
                 ],
-            ],
+            ])->toArray(),
         ]);
     }
 

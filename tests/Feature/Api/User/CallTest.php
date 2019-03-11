@@ -11,7 +11,7 @@ use Laravel\Passport\Passport;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EndpointTest extends TestCase
+class CallTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -33,24 +33,30 @@ class EndpointTest extends TestCase
         $user = $this->user;
 
         $endpoint = factory(Endpoint::class)->make();
+        
+        $call = factory(Call::class)->make();
 
         $project = factory(Project::class)->create();
         $project->each(
-            function ($project) use ($user, $endpoint) {
+            function ($project) use ($user, $endpoint, $call) {
                 $project->users()->attach($user->id);
-                $project->endpoints()->save($endpoint);
+                $project->endpoints()->save($endpoint)->each(
+                    function ($endpoint) use ($call) {
+                        $endpoint->calls()->save($call);
+                    }
+                );
             }
         );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints'
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls'
         );
 
         $response->assertStatus(200)->assertJsonStructure([
             'data' => [
-                collect($endpoint)->except(['project_id'])->keys()->toArray(),
+                collect($call)->except(['endpoint_id'])->keys()->toArray(),
             ],
             'links',
             'meta',
@@ -62,37 +68,47 @@ class EndpointTest extends TestCase
         $user = $this->user;
 
         $endpoint = factory(Endpoint::class)->make();
+        
+        $call = factory(Call::class)->make();
 
         $project = factory(Project::class)->create();
         $project->each(
-            function ($project) use ($user) {
+            function ($project) use ($user, $endpoint) {
                 $project->users()->attach($user->id);
+                $project->endpoints()->save($endpoint);
             }
         );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints',
-            $endpoint->toArray()
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls',
+            $call->toArray()
         );
 
         $response->assertStatus(201)->assertJsonStructure([
-            'data' => collect($endpoint)->except(['project_id'])->keys()->toArray(),
+            'data' => collect($call)->except(['endpoint_id'])->keys()->toArray(),
         ]);
     }
 
     public function testCannotCreate()
     {
         $endpoint = factory(Endpoint::class)->make();
+        
+        $call = factory(Call::class)->make();
 
         $project = factory(Project::class)->create();
+        $project->each(
+            function ($project) use ($endpoint) {
+                $project->endpoints()->save($endpoint);
+            }
+        );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints',
-            $endpoint->toArray()
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls',
+            $call->toArray()
         );
 
         $response->assertStatus(403);
@@ -121,15 +137,12 @@ class EndpointTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints/'.$endpoint->id.'?with=project,calls'
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls/'.$call->id.'?with=endpoint'
         );
 
         $response->assertStatus(200)->assertJsonStructure([
-            'data' => collect($endpoint)->except(['project_id'])->keys()->merge([
-                'project' => collect($project)->keys()->toArray(),
-                'calls' => [
-                    collect($call)->except(['endpoint_id'])->keys()->toArray(),
-                ],
+            'data' => collect($call)->except(['endpoint_id'])->keys()->merge([
+                'endpoint' => collect($endpoint)->except(['project_id'])->keys()->toArray(),
             ])->toArray(),
         ]);
     }
@@ -154,7 +167,7 @@ class EndpointTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints/'.$endpoint->id.'?with=project,calls'
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls/'.$call->id.'?with=endpoint'
         );
 
         $response->assertStatus(403);
@@ -166,23 +179,29 @@ class EndpointTest extends TestCase
 
         $endpoint = factory(Endpoint::class)->make();
 
+        $call = factory(Call::class)->make();
+
         $project = factory(Project::class)->create();
         $project->each(
-            function ($project) use ($user, $endpoint) {
+            function ($project) use ($user, $endpoint, $call) {
                 $project->users()->attach($user->id);
-                $project->endpoints()->save($endpoint);
+                $project->endpoints()->save($endpoint)->each(
+                    function ($endpoint) use ($call) {
+                        $endpoint->calls()->save($call);
+                    }
+                );
             }
         );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->patch(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints/'.$endpoint->id,
-            $endpoint->toArray()
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls/'.$call->id,
+            $call->toArray()
         );
 
         $response->assertStatus(200)->assertJsonStructure([
-            'data' => collect($endpoint)->except(['project_id'])->keys()->toArray(),
+            'data' => collect($call)->except(['endpoint_id'])->keys()->toArray(),
         ]);
     }
 
@@ -190,18 +209,24 @@ class EndpointTest extends TestCase
     {
         $endpoint = factory(Endpoint::class)->make();
 
+        $call = factory(Call::class)->make();
+
         $project = factory(Project::class)->create();
         $project->each(
-            function ($project) use ($endpoint) {
-                $project->endpoints()->save($endpoint);
+            function ($project) use ($endpoint, $call) {
+                $project->endpoints()->save($endpoint)->each(
+                    function ($endpoint) use ($call) {
+                        $endpoint->calls()->save($call);
+                    }
+                );
             }
         );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->patch(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints/'.$endpoint->id,
-            $endpoint->toArray()
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls/'.$call->id,
+            $call->toArray()
         );
 
         $response->assertStatus(403);
@@ -213,18 +238,24 @@ class EndpointTest extends TestCase
 
         $endpoint = factory(Endpoint::class)->make();
 
+        $call = factory(Call::class)->make();
+
         $project = factory(Project::class)->create();
         $project->each(
-            function ($project) use ($user, $endpoint) {
+            function ($project) use ($user, $endpoint, $call) {
                 $project->users()->attach($user->id);
-                $project->endpoints()->save($endpoint);
+                $project->endpoints()->save($endpoint)->each(
+                    function ($endpoint) use ($call) {
+                        $endpoint->calls()->save($call);
+                    }
+                );
             }
         );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->delete(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints/'.$endpoint->id
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls/'.$call->id
         );
 
         $response->assertStatus(204);
@@ -234,17 +265,23 @@ class EndpointTest extends TestCase
     {
         $endpoint = factory(Endpoint::class)->make();
 
+        $call = factory(Call::class)->make();
+
         $project = factory(Project::class)->create();
         $project->each(
-            function ($project) use ($endpoint) {
-                $project->endpoints()->save($endpoint);
+            function ($project) use ($endpoint, $call) {
+                $project->endpoints()->save($endpoint)->each(
+                    function ($endpoint) use ($call) {
+                        $endpoint->calls()->save($call);
+                    }
+                );
             }
         );
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->delete(
-            $this->endpoint.'/projects/'.$project->id.'/endpoints/'.$endpoint->id
+            $this->endpoint.'/endpoints/'.$endpoint->id.'/calls/'.$call->id
         );
 
         $response->assertStatus(403);

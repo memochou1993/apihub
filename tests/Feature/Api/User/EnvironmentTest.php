@@ -118,10 +118,9 @@ class EnvironmentTest extends TestCase
         );
 
         $response->assertStatus(200)->assertJsonStructure([
-            'data' => [
-                collect($environment)->keys()->toArray()[0],
+            'data' => collect($environment)->except(['project_id'])->keys()->merge([
                 'project' => collect($project)->keys()->toArray(),
-            ]
+            ])->toArray(),
         ]);
     }
 
@@ -139,7 +138,7 @@ class EnvironmentTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id
+            $this->endpoint.'/projects/'.$project->id.'/environments/'.$environment->id.'?with=project'
         );
 
         $response->assertStatus(403);
