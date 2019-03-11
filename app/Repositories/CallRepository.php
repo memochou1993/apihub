@@ -69,7 +69,11 @@ class CallRepository implements CallInterface
      */
     public function storeCall(Endpoint $endpoint, array $request)
     {
-        return $endpoint->calls()->create($request);
+        $call = $endpoint->calls()->create($request);
+
+        $call->shouldBeSearchable();
+
+        return $call;
     }
 
     /**

@@ -69,7 +69,11 @@ class EndpointRepository implements EndpointInterface
      */
     public function storeEndpoint(Project $project, array $request)
     {
-        return $project->endpoints()->create($request);
+        $endpoint = $project->endpoints()->create($request);
+
+        $endpoint->shouldBeSearchable();
+
+        return $endpoint;
     }
 
     /**

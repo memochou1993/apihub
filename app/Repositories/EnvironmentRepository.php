@@ -69,7 +69,11 @@ class EnvironmentRepository implements EnvironmentInterface
      */
     public function storeEnvironment(Project $project, array $request)
     {
-        return $project->environments()->create($request);
+        $environment = $project->environments()->create($request);
+
+        $environment->shouldBeSearchable();
+
+        return $environment;
     }
 
     /**

@@ -3,10 +3,13 @@
 namespace App;
 
 use App\Endpoint;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Call extends Model
 {
+    use Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
