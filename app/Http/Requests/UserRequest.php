@@ -61,14 +61,14 @@ class UserRequest extends FormRequest
                 return [
                     'username' => [
                         'required',
-                        'unique:users',
+                        'unique:users,name,'.$this->id
                     ],
                     'name' => [
                         'required',
                     ],
                     'email' => [
                         'required',
-                        'unique:users',
+                        'unique:users,name,'.$this->id
                     ],
                     'password' => [
                         'required',

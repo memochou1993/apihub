@@ -18,11 +18,6 @@ class UserController extends ApiController
     protected $request;
 
     /**
-     * @var \App\User
-     */
-    protected $user;
-
-    /**
      * @var \App\Contracts\UserInterface
      */
     protected $reposotory;
@@ -31,16 +26,15 @@ class UserController extends ApiController
      * Create a new controller instance.
      *
      * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\User  $user
      * @param  \App\Contracts\UserInterface  $reposotory
      * @return void
      */
-    public function __construct(Request $request, User $user, Repository $reposotory)
+    public function __construct(Request $request, Repository $reposotory)
     {
         parent::__construct();
 
         $this->request = $request;
-        $this->user = $user;
+
         $this->reposotory = $reposotory;
 
         $this->setQueries([
@@ -70,9 +64,7 @@ class UserController extends ApiController
      */
     public function store()
     {
-        $fillable = $this->user->getFillable();
-        $request = $this->request->only($fillable);
-        $user = $this->reposotory->storeUser($request);
+        $user = $this->reposotory->storeUser($this->request->all());
 
         return new Resource($user);
     }
@@ -102,9 +94,7 @@ class UserController extends ApiController
     {
         $this->authorize('update', [$user]);
 
-        $fillable = $this->user->getFillable();
-        $request = $this->request->only($fillable);
-        $user = $this->reposotory->updateUser($user->id, $request);
+        $user = $this->reposotory->updateUser($user->id, $this->request->all());
 
         return new Resource($user);
     }

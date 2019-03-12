@@ -64,7 +64,7 @@ class UserRepository implements UserInterface
      */
     public function storeUser(array $request)
     {
-        $user = $this->user->firstOrCreate($request);
+        $user = $this->user->create($request);
 
         $user->shouldBeSearchable();
 
