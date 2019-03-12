@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Contracts\UserInterface;
 use App\Contracts\ProjectInterface;
 use App\Contracts\EnvironmentInterface;
 use App\Contracts\EndpointInterface;
 use App\Contracts\CallInterface;
+use App\Repositories\UserRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\EnvironmentRepository;
 use App\Repositories\EndpointRepository;
@@ -38,6 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(UserInterface::class, UserRepository::class);
         $this->app->bind(ProjectInterface::class, ProjectRepository::class);
         $this->app->bind(EnvironmentInterface::class, EnvironmentRepository::class);
         $this->app->bind(EndpointInterface::class, EndpointRepository::class);
@@ -52,6 +55,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
+            UserInterface::class,
             ProjectInterface::class,
             EnvironmentInterface::class,
             EndpointInterface::class,
