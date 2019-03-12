@@ -21,6 +21,10 @@ class ApiController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth:api')->except([
+            'login',
+        ]);
+
         $default_user = User::find(config('defalut.user'));
 
         $this->user = $default_user ? Passport::actingAs($default_user) : Auth::guard('api')->user();
