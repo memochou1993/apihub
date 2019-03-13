@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\User;
 use App\Traits\Queryable;
 use App\Contracts\UserInterface;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserInterface
 {
@@ -65,6 +66,10 @@ class UserRepository implements UserInterface
     public function storeUser(array $request)
     {
         $user = $this->user->create($request);
+        
+        $user->fill([
+            'password' => Hash::make($request['password']),
+        ])->save();
 
         $user->shouldBeSearchable();
 
@@ -81,6 +86,10 @@ class UserRepository implements UserInterface
         $user = $this->user->find($id);
 
         $user->update($request);
+        
+        $user->fill([
+            'password' => Hash::make($request['password']),
+        ])->save();
 
         return $user;
     }
