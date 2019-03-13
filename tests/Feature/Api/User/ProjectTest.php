@@ -70,7 +70,7 @@ class ProjectTest extends TestCase
         ]);
     }
 
-    public function testCannotCreateDuplicateProject()
+    public function testCannotCreateDuplicate()
     {
         $user = $this->user;
 
@@ -187,7 +187,7 @@ class ProjectTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testCannotUpdateDuplicateProject()
+    public function testCannotUpdateDuplicate()
     {
         $user = $this->user;
 
