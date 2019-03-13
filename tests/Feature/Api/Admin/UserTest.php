@@ -14,8 +14,6 @@ class UserTest extends TestCase
 
     protected $endpoint = '/api/admin';
 
-    protected $user;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -57,7 +55,7 @@ class UserTest extends TestCase
         ])->post(
             $this->endpoint.'/users',
             collect($user_2->toArray())->merge([
-                'password' => 'secret'
+                'password' => 'secret',
             ])->toArray()
         );
 
@@ -127,7 +125,7 @@ class UserTest extends TestCase
         ])->patch(
             $this->endpoint.'/users/'.$user_1->id,
             collect($user_1->toArray())->merge([
-                'password' => 'secret'
+                'password' => 'secret',
             ])->toArray()
         );
 
@@ -149,7 +147,7 @@ class UserTest extends TestCase
         ])->patch(
             $this->endpoint.'/users/'.$user_1->id,
             collect($user_1->toArray())->merge([
-                'password' => 'secret'
+                'password' => 'secret',
             ])->toArray()
         );
 
@@ -169,7 +167,7 @@ class UserTest extends TestCase
         ])->patch(
             $this->endpoint.'/users/'.$user_1->id,
             collect($user_2->toArray())->merge([
-                'password' => 'secret'
+                'password' => 'secret',
             ])->toArray()
         );
 

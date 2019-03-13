@@ -43,7 +43,7 @@ class AuthController extends ApiController
                 'form_params' => $this->request->all(),
             ]);
 
-            return $response->getBody();
+            return response($response->getBody(), 200);
         } catch (ClientException $e) {
             return $e->getResponse();
         }
@@ -66,7 +66,7 @@ class AuthController extends ApiController
                 'form_params' => $this->request->all(),
             ]);
 
-            return $response->getBody();
+            return response($response->getBody(), 200);
         } catch (ClientException $e) {
             return $e->getResponse();
         }
@@ -83,7 +83,7 @@ class AuthController extends ApiController
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\UserResource
      */
     public function user()
     {
