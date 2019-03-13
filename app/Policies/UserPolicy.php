@@ -24,10 +24,11 @@ class UserPolicy
     /**
      * Determine whether the user can create projects.
      *
+     * @param  \App\User  $me
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $me, User $user)
     {
         //
     }
@@ -59,10 +60,11 @@ class UserPolicy
     /**
      * Determine whether the user can restore the project.
      *
+     * @param  \App\User  $me
      * @param  \App\User  $user
      * @return mixed
      */
-    public function restore(User $user)
+    public function restore(User $me, User $user)
     {
         //
     }
@@ -70,10 +72,11 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the project.
      *
+     * @param  \App\User  $me
      * @param  \App\User  $user
      * @return mixed
      */
-    public function forceDelete(User $user)
+    public function forceDelete(User $me, User $user)
     {
         //
     }
