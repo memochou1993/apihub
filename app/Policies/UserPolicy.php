@@ -12,12 +12,13 @@ class UserPolicy
     /**
      * Determine whether the user can view the project.
      *
+     * @param  \App\User  $me
      * @param  \App\User  $user
      * @return mixed
      */
-    public function view(User $user)
+    public function view(User $me, User $user)
     {
-        return $user->id === config('default.admin.id');
+        return $me->id === $user->id || $me->id === config('default.admin.id');
     }
 
     /**
@@ -34,23 +35,25 @@ class UserPolicy
     /**
      * Determine whether the user can update the project.
      *
+     * @param  \App\User  $me
      * @param  \App\User  $user
      * @return mixed
      */
-    public function update(User $user)
+    public function update(User $me, User $user)
     {
-        return $user->id === config('default.admin.id');
+        return $me->id === $user->id || $me->id === config('default.admin.id');
     }
 
     /**
      * Determine whether the user can delete the project.
      *
+     * @param  \App\User  $me
      * @param  \App\User  $user
      * @return mixed
      */
-    public function delete(User $user)
+    public function delete(User $me, User $user)
     {
-        return $user->id === config('default.admin.id');
+        return $me->id === $user->id || $me->id === config('default.admin.id');
     }
 
     /**

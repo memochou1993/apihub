@@ -13,59 +13,59 @@ class CallPolicy
     /**
      * Determine whether the user can view the call.
      *
-     * @param  \App\User  $user
+     * @param  \App\User  $me
      * @param  \App\Call  $call
      * @return mixed
      */
-    public function view(User $user, Call $call)
+    public function view(User $me, Call $call)
     {
-        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
+        return in_array($me->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
      * Determine whether the user can create calls.
      *
-     * @param  \App\User  $user
+     * @param  \App\User  $me
      * @param  \App\Call  $call
      * @return mixed
      */
-    public function create(User $user, Call $call)
+    public function create(User $me, Call $call)
     {
-        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
+        return in_array($me->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
      * Determine whether the user can update the call.
      *
-     * @param  \App\User  $user
+     * @param  \App\User  $me
      * @param  \App\Call  $call
      * @return mixed
      */
-    public function update(User $user, Call $call)
+    public function update(User $me, Call $call)
     {
-        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
+        return in_array($me->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
      * Determine whether the user can delete the call.
      *
-     * @param  \App\User  $user
+     * @param  \App\User  $me
      * @param  \App\Call  $call
      * @return mixed
      */
-    public function delete(User $user, Call $call)
+    public function delete(User $me, Call $call)
     {
-        return in_array($user->id, $call->endpoint->project->users->pluck('id')->all());
+        return in_array($me->id, $call->endpoint->project->users->pluck('id')->all());
     }
 
     /**
      * Determine whether the user can restore the call.
      *
-     * @param  \App\User  $user
+     * @param  \App\User  $me
      * @param  \App\Call  $call
      * @return mixed
      */
-    public function restore(User $user, Call $call)
+    public function restore(User $me, Call $call)
     {
         //
     }
@@ -73,11 +73,11 @@ class CallPolicy
     /**
      * Determine whether the user can permanently delete the call.
      *
-     * @param  \App\User  $user
+     * @param  \App\User  $me
      * @param  \App\Call  $call
      * @return mixed
      */
-    public function forceDelete(User $user, Call $call)
+    public function forceDelete(User $me, Call $call)
     {
         //
     }

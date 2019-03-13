@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Rules\With;
+use App\Rules\Unique;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectRequest extends FormRequest
@@ -39,9 +41,12 @@ class ProjectRequest extends FormRequest
                 ];
 
             case 'POST':
+                $user = Auth::guard('api')->user() ?? abort(401, 'Unauthenticated.');            
+
                 return [
                     'name' => [
                         'required',
+                        new Unique($user, 'projects'),
                     ],
                     'private' => [
                         'boolean',
@@ -50,9 +55,12 @@ class ProjectRequest extends FormRequest
 
             case 'PUT':
             case 'PATCH':
+                $user = Auth::guard('api')->user() ?? abort(401, 'Unauthenticated.');
+
                 return [
                     'name' => [
                         'required',
+                        new Unique($user, 'projects', $this->project),
                     ],
                     'private' => [
                         'boolean',
