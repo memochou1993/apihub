@@ -84,7 +84,7 @@ class EndpointController extends ApiController
      */
     public function show(Project $project, Endpoint $endpoint)
     {
-        $this->authorize('view', [$project, $endpoint]);
+        $this->authorize('view', $endpoint);
 
         $endpoints = $this->reposotory->getEndpoint($endpoint->id, $this->queries);
 
@@ -100,7 +100,7 @@ class EndpointController extends ApiController
      */
     public function update(Project $project, Endpoint $endpoint)
     {
-        $this->authorize('view', [$project, $endpoint]);
+        $this->authorize('view', $endpoint);
 
         $endpoint = $this->reposotory->updateEndpoint($endpoint->id, $this->request->all());
 
@@ -116,7 +116,7 @@ class EndpointController extends ApiController
      */
     public function destroy(Project $project, Endpoint $endpoint)
     {
-        $this->authorize('view', [$project, $endpoint]);
+        $this->authorize('view', $endpoint);
 
         $endpoint = $this->reposotory->destroyEndpoint($endpoint->id);
 

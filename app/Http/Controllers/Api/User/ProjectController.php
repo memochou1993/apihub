@@ -76,7 +76,7 @@ class ProjectController extends ApiController
      */
     public function show(Project $project)
     {
-        $this->authorize('view', [$project]);
+        $this->authorize('view', $project);
 
         $project = $this->reposotory->getProject($project->id, $this->queries);
 
@@ -91,7 +91,7 @@ class ProjectController extends ApiController
      */
     public function update(Project $project)
     {
-        $this->authorize('update', [$project]);
+        $this->authorize('update', $project);
 
         $project = $this->reposotory->updateProject($project->id, $this->request->all());
 
@@ -106,7 +106,7 @@ class ProjectController extends ApiController
      */
     public function destroy(Project $project)
     {
-        $this->authorize('delete', [$project]);
+        $this->authorize('delete', $project);
 
         $this->reposotory->destroyProject($project->id);
 
