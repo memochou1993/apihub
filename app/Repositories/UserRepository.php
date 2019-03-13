@@ -65,13 +65,9 @@ class UserRepository implements UserInterface
      */
     public function storeUser(array $request)
     {
-        $user = $this->user->create($request);
-        
-        $user->fill([
-            'password' => Hash::make($request['password']),
-        ])->save();
-
-        $user->shouldBeSearchable();
+        $user = $this->user->create(collect($request)->put(
+            'password', Hash::make($request['password'])
+        )->toArray());
 
         return $user;
     }
@@ -85,11 +81,9 @@ class UserRepository implements UserInterface
     {
         $user = $this->user->find($id);
 
-        $user->update($request);
-        
-        $user->fill([
-            'password' => Hash::make($request['password']),
-        ])->save();
+        $user->update(collect($request)->put(
+            'password', Hash::make($request['password'])
+        )->toArray());
 
         return $user;
     }

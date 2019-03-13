@@ -34,7 +34,7 @@ class Project extends Model
      */
     public function shouldBeSearchable()
     {
-        return ! $this->private;
+        return $this->private ?? false;
     }
 
     /**

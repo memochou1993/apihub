@@ -71,8 +71,6 @@ class EndpointRepository implements EndpointInterface
     {
         $endpoint = $project->endpoints()->create($request);
 
-        $endpoint->shouldBeSearchable();
-
         return $endpoint;
     }
 

@@ -80,8 +80,6 @@ class ProjectRepository implements ProjectInterface
     {
         $project = $user->projects()->create($request);
 
-        $project->shouldBeSearchable();
-
         return $project;
     }
 

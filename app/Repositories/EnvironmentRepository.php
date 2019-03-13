@@ -71,8 +71,6 @@ class EnvironmentRepository implements EnvironmentInterface
     {
         $environment = $project->environments()->create($request);
 
-        $environment->shouldBeSearchable();
-
         return $environment;
     }
 

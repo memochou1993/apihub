@@ -71,8 +71,6 @@ class CallRepository implements CallInterface
     {
         $call = $endpoint->calls()->create($request);
 
-        $call->shouldBeSearchable();
-
         return $call;
     }
 
