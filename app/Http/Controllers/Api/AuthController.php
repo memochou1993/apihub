@@ -31,7 +31,22 @@ class AuthController extends ApiController
      */
     public function register()
     {
-        //
+        try {
+            $client = new Client([
+                'base_uri' => config('app.url'),
+            ]);
+
+            $response = $client->post('/api/users', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => $this->request->all(),
+            ]);
+
+            return $response->getBody();
+        } catch (ClientException $e) {
+            return $e->getResponse();
+        }
     }
 
     /**
@@ -45,6 +60,9 @@ class AuthController extends ApiController
             ]);
 
             $response = $client->post('/oauth/token', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                ],
                 'form_params' => $this->request->all(),
             ]);
 

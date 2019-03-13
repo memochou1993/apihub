@@ -14,18 +14,25 @@ use Illuminate\Http\Request;
 */
 
 Route::namespace('Api')->group(function () {
+    Route::resource('users', 'UserController')->only(['index', 'store']);
+
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register')->name('auth.register');
         Route::post('login', 'AuthController@login')->name('auth.login');
-        Route::get('logout', 'AuthController@logout')->name('auth.logout');
-        Route::get('user', 'AuthController@user')->name('auth.user');
+        Route::get('logout', 'AuthController@logout')->name('auth.logout')->middleware('auth:api');
+        Route::get('user', 'AuthController@user')->name('auth.user')->middleware('auth:api');
     });
-    Route::resource('users', 'UserController');
-});
 
-Route::namespace('Api\User')->prefix('users/me')->group(function () {
-    Route::resource('projects', 'ProjectController');
-    Route::resource('projects.environments', 'EnvironmentController');
-    Route::resource('projects.endpoints', 'EndpointController');
-    Route::resource('endpoints.calls', 'CallController');
+    Route::middleware('auth:api')->group(function () {
+        Route::namespace('Admin')->prefix('admin')->group(function () {
+            Route::resource('users', 'UserController');
+        });
+
+        Route::namespace('User')->prefix('users/me')->group(function () {
+            Route::resource('projects', 'ProjectController');
+            Route::resource('projects.environments', 'EnvironmentController');
+            Route::resource('projects.endpoints', 'EndpointController');
+            Route::resource('endpoints.calls', 'CallController');
+        });
+    });
 });

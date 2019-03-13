@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
+use App\User;
 use App\Traits\Queryable;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\UserRequest as Request;
 use App\Contracts\UserInterface as Repository;
 use App\Http\Resources\UserResource as Resource;
@@ -66,5 +68,50 @@ class UserController extends ApiController
         $user = $this->reposotory->storeUser($this->request->all());
 
         return new Resource($user);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\User  $user
+     * @return \App\Http\Resources\UserResource
+     */
+    public function show(User $user)
+    {
+        $this->authorize('view', [$user]);
+
+        $user = $this->reposotory->getUser($user->id, $this->queries);
+
+        return new Resource($user);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\User  $user
+     * @return \App\Http\Resources\UserResource
+     */
+    public function update(User $user)
+    {
+        $this->authorize('update', [$user]);
+
+        $user = $this->reposotory->updateUser($user->id, $this->request->all());
+
+        return new Resource($user);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+        $this->authorize('delete', [$user]);
+
+        $this->reposotory->destroyUser($user->id);
+
+        return response(null, 204);
     }
 }
