@@ -70,6 +70,27 @@ class ProjectTest extends TestCase
         ]);
     }
 
+    public function testCannotCreateDuplicateProject()
+    {
+        $user = $this->user;
+
+        $project = factory(Project::class)->create();
+        $project->each(
+            function ($project) use ($user) {
+                $project->users()->attach($user->id);
+            }
+        );
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->post(
+            $this->endpoint.'/projects',
+            $project->toArray()
+        );
+
+        $response->assertStatus(422);
+    }
+
     public function testShow()
     {
         $user = $this->user;
@@ -164,6 +185,34 @@ class ProjectTest extends TestCase
         );
 
         $response->assertStatus(403);
+    }
+
+    public function testCannotUpdateDuplicateProject()
+    {
+        $user = $this->user;
+
+        $project[1] = factory(Project::class)->create();
+        $project[1]->each(
+            function ($project) use ($user) {
+                $project->users()->attach($user->id);
+            }
+        );
+
+        $project[2] = factory(Project::class)->create();
+        $project[2]->each(
+            function ($project) use ($user) {
+                $project->users()->attach($user->id);
+            }
+        );
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->patch(
+            $this->endpoint.'/projects/'.$project[1]->id,
+            $project[2]->toArray()
+        );
+
+        $response->assertStatus(422);
     }
 
     public function testDestroy()
