@@ -48,6 +48,7 @@ class ProjectRequest extends FormRequest
                         new Unique($user, 'projects'),
                     ],
                     'private' => [
+                        'required',
                         'boolean',
                     ],
                 ];
@@ -62,6 +63,7 @@ class ProjectRequest extends FormRequest
                         new Unique($user, 'projects', $this->project),
                     ],
                     'private' => [
+                        'required',
                         'boolean',
                     ],
                 ];

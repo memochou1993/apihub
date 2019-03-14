@@ -22,7 +22,7 @@ class ProjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'private' => (bool) $this->private,
+            'private' => $this->private,
             'created_at' => $convertDate($this->created_at),
             'updated_at' => $convertDate($this->updated_at),
             'users' => UserResource::collection($this->whenLoaded('users')),
