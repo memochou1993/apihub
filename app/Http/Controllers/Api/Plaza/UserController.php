@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Plaza;
 
 use App\Traits\Queryable;
 use App\Http\Requests\UserRequest as Request;

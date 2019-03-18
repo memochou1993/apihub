@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Plaza;
 
 use App\User;
 use App\Project;
@@ -51,11 +51,12 @@ class ProjectController extends ApiController
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\User  $user
      * @return \App\Http\Resources\ProjectResource
      */
-    public function index()
+    public function index(User $user)
     {
-        $projects = $this->reposotory->getProjectsByUser($this->user, $this->queries);
+        $projects = $this->reposotory->getProjectsByUser($user, $this->queries);
 
         return Resource::collection($projects);
     }

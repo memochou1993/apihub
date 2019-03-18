@@ -14,9 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::namespace('Api')->group(function () {
-    Route::resource('users', 'UserController')->only(['index', 'store']);
-    Route::resource('users.projects', 'ProjectController')->only(['index', 'show']);
-
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register')->name('auth.register');
         Route::post('login', 'AuthController@login')->name('auth.login');
@@ -26,14 +23,19 @@ Route::namespace('Api')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::namespace('Admin')->prefix('admin')->group(function () {
-            Route::resource('users', 'UserController');
+            Route::resource('users', 'UserController')->except(['create', 'edit']);
         });
 
         Route::namespace('User')->prefix('users/me')->group(function () {
-            Route::resource('projects', 'ProjectController');
-            Route::resource('projects.environments', 'EnvironmentController');
-            Route::resource('projects.endpoints', 'EndpointController');
-            Route::resource('endpoints.calls', 'CallController');
+            Route::resource('projects', 'ProjectController')->except(['create', 'edit']);
+            Route::resource('projects.environments', 'EnvironmentController')->except(['create', 'edit']);
+            Route::resource('projects.endpoints', 'EndpointController')->except(['create', 'edit']);
+            Route::resource('endpoints.calls', 'CallController')->except(['create', 'edit']);
         });
+    });
+
+    Route::namespace('Plaza')->group(function () {
+        Route::resource('users', 'UserController')->only(['index', 'store']);
+        Route::resource('users.projects', 'ProjectController')->only(['index', 'show']);
     });
 });
