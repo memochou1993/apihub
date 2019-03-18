@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::namespace('Api')->group(function () {
     Route::resource('users', 'UserController')->only(['index', 'store']);
+    Route::resource('users.projects', 'ProjectController')->only(['index', 'show']);
 
     Route::prefix('auth')->group(function () {
         Route::post('register', 'AuthController@register')->name('auth.register');

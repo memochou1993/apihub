@@ -37,6 +37,9 @@ class ProjectRequest extends FormRequest
                         'min:1',
                         'integer',
                     ],
+                    'private' => [
+                        'boolean',
+                    ],
                 ];
 
             case 'POST':
