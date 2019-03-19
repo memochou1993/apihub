@@ -79,4 +79,21 @@ class UserTest extends TestCase
 
         $response->assertStatus(422);
     }
+
+    public function testShow()
+    {
+        $user_1 = factory(User::class)->create();
+
+        Passport::actingAs($user_1);
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->get(
+            $this->endpoint.'/'.$user_1->id
+        );
+
+        $response->assertStatus(200)->assertJsonStructure([
+            'data' => collect($user_1)->except(['email_verified_at'])->keys()->toArray(),
+        ]);
+    }
 }

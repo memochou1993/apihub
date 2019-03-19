@@ -35,7 +35,7 @@ Route::namespace('Api')->group(function () {
     });
 
     Route::namespace('Plaza')->group(function () {
-        Route::resource('users', 'UserController')->only(['index', 'store']);
+        Route::resource('users', 'UserController')->only(['index', 'show', 'store']);
         Route::resource('users.projects', 'ProjectController')->only(['index', 'show']);
     });
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Plaza;
 
+use App\User;
 use App\Traits\Queryable;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\UserRequest as Request;
@@ -65,6 +66,19 @@ class UserController extends ApiController
     public function store()
     {
         $user = $this->reposotory->storeUser($this->request->all());
+
+        return new Resource($user);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\User  $user
+     * @return \App\Http\Resources\UserResource
+     */
+    public function show(User $user)
+    {
+        $user = $this->reposotory->getUser($user->id, $this->queries);
 
         return new Resource($user);
     }
