@@ -70,7 +70,7 @@ class ProjectController extends ApiController
      */
     public function show(User $user, Project $project)
     {
-        $project = $this->reposotory->getProject($project->id, $this->queries);
+        $project = $this->reposotory->getProjectByUser($user, $project->id, $this->queries);
 
         return new Resource($project);
     }

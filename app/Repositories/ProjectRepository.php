@@ -73,6 +73,19 @@ class ProjectRepository implements ProjectInterface
 
     /**
      * @param  \App\User  $user
+     * @param  int  $id
+     * @param  array  $queries
+     * @return \App\Project
+     */
+    public function getProjectByUser(User $user, int $id, array $queries = [])
+    {
+        $this->castQueries($queries);
+
+        return $user->projects()->where($this->where)->with($this->with)->findOrFail($id);
+    }
+
+    /**
+     * @param  \App\User  $user
      * @param  array  $request
      * @return \App\Project
      */
