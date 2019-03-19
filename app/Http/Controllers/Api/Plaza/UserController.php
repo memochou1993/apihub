@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Plaza;
 
 use App\Traits\Queryable;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\UserRequest as Request;
 use App\Contracts\UserInterface as Repository;
 use App\Http\Resources\UserResource as Resource;

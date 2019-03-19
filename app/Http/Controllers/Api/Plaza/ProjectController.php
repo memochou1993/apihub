@@ -41,7 +41,7 @@ class ProjectController extends ApiController
 
         $this->setQueries([
             'where' => [
-                'private' => $request->private ?? false,
+                'private' => false,
             ],
             'with' => $request->with,
             'paginate' => $request->paginate,

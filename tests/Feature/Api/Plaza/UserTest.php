@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api;
+namespace Tests\Feature\Api\Plaza;
 
 use App\User;
 use Tests\TestCase;
@@ -30,7 +30,7 @@ class UserTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            $this->endpoint.'/'
+            $this->endpoint
         );
 
         $response->assertStatus(200)->assertJsonStructure([
@@ -53,7 +53,7 @@ class UserTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
-            $this->endpoint.'/',
+            $this->endpoint,
             collect($user_2->toArray())->merge([
                 'password' => 'secret',
             ])->toArray()
@@ -73,7 +73,7 @@ class UserTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
-            $this->endpoint.'/',
+            $this->endpoint,
             $user_1->toArray()
         );
 
