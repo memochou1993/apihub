@@ -25,8 +25,6 @@ class UserTest extends TestCase
     {
         $user_1 = factory(User::class)->create();
 
-        Passport::actingAs($user_1);
-
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
@@ -44,31 +42,25 @@ class UserTest extends TestCase
 
     public function testStore()
     {
-        $user_1 = factory(User::class)->create();
-
-        Passport::actingAs($user_1);
-
-        $user_2 = factory(User::class)->make();
+        $user_1 = factory(User::class)->make();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
             $this->endpoint,
-            collect($user_2->toArray())->merge([
+            collect($user_1->toArray())->merge([
                 'password' => 'secret',
             ])->toArray()
         );
 
         $response->assertStatus(201)->assertJsonStructure([
-            'data' => collect($user_2)->except(['email_verified_at'])->keys()->toArray(),
+            'data' => collect($user_1)->except(['email_verified_at'])->keys()->toArray(),
         ]);
     }
 
     public function testCannotCreateDuplicate()
     {
         $user_1 = factory(User::class)->create();
-
-        Passport::actingAs($user_1);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
@@ -83,8 +75,6 @@ class UserTest extends TestCase
     public function testShow()
     {
         $user_1 = factory(User::class)->create();
-
-        Passport::actingAs($user_1);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',

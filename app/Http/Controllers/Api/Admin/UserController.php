@@ -78,8 +78,6 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
-        $this->authorize('view', [$user]);
-
         $user = $this->reposotory->getUser($user->id, $this->queries);
 
         return new Resource($user);
@@ -93,8 +91,6 @@ class UserController extends ApiController
      */
     public function update(User $user)
     {
-        $this->authorize('update', [$user]);
-
         $user = $this->reposotory->updateUser($user->id, $this->request->all());
 
         return new Resource($user);
@@ -108,8 +104,6 @@ class UserController extends ApiController
      */
     public function destroy(User $user)
     {
-        $this->authorize('delete', [$user]);
-
         $this->reposotory->destroyUser($user->id);
 
         return response(null, 204);

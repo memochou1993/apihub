@@ -62,6 +62,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'cors.headers' => \App\Http\Middleware\SetCORSHeaders::class,
+        'is.admin' => \App\Http\Middleware\IsAdmin::class,
+        'is.public.project' => \App\Http\Middleware\IsPublicProject::class,
     ];
 
     /**

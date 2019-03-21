@@ -22,7 +22,7 @@ Route::namespace('Api')->group(function () {
     });
 
     Route::middleware('auth:api')->group(function () {
-        Route::namespace('Admin')->prefix('admin')->group(function () {
+        Route::namespace('Admin')->prefix('admin')->middleware('is.admin')->group(function () {
             Route::resource('users', 'UserController')->except(['create', 'edit']);
         });
 
@@ -37,5 +37,8 @@ Route::namespace('Api')->group(function () {
     Route::namespace('Plaza')->group(function () {
         Route::resource('users', 'UserController')->only(['index', 'show', 'store']);
         Route::resource('users.projects', 'ProjectController')->only(['index', 'show']);
+        Route::middleware('is.public.project')->group(function () {
+            Route::resource('projects.endpoints', 'EndpointController')->only(['index', 'show']);
+        });
     });
 });
