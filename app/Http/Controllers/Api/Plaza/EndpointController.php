@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Plaza;
 
+use App\User;
 use App\Project;
 use App\Endpoint;
 use App\Traits\Queryable;
@@ -48,10 +49,11 @@ class EndpointController extends ApiController
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\User  $user
      * @param  \App\Project  $project
      * @return \App\Http\Resources\EndpointResource
      */
-    public function index(Project $project)
+    public function index(User $user, Project $project)
     {
         $endpoints = $this->reposotory->getEndpointsByProject($project, $this->queries);
 
@@ -61,13 +63,14 @@ class EndpointController extends ApiController
     /**
      * Display the specified resource.
      *
+     * @param  \App\User  $user
      * @param  \App\Project  $project
      * @param  \App\Endpoint  $endpoint
      * @return \App\Http\Resources\EndpointResource
      */
-    public function show(Project $project, Endpoint $endpoint)
+    public function show(User $user, Project $project, Endpoint $endpoint)
     {
-        $endpoints = $this->reposotory->getEndpoint($endpoint->id, $this->queries);
+        $endpoints = $this->reposotory->getEndpointByProject($project, $endpoint->id, $this->queries);
 
         return new Resource($endpoints);
     }

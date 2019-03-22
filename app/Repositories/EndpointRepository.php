@@ -64,6 +64,19 @@ class EndpointRepository implements EndpointInterface
 
     /**
      * @param  \App\Project  $project
+     * @param  int  $id
+     * @param  array  $queries
+     * @return \App\Eenpoint
+     */
+    public function getEndpointByProject(Project $project, int $id, array $queries = [])
+    {
+        $this->castQueries($queries);
+
+        return $project->endpoints()->where($this->where)->with($this->with)->findOrFail($id);
+    }
+
+    /**
+     * @param  \App\Project  $project
      * @param  array  $request
      * @return \App\Endpoint
      */
