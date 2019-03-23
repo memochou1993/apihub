@@ -16,7 +16,7 @@ class Endpoint extends Model
      * @var array
      */
     protected $fillable = [
-        'group', 'method', 'name', 'description',
+        'name', 'method', 'uri', 'description',
     ];
 
     /**
