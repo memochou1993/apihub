@@ -11,7 +11,7 @@ $factory->define(App\Environment::class, function (Faker $faker) {
             'API_SECRET' => '$2y$10$cHyBqkRdoSzWRQ0uZ.sXNesMxg/Qr/Cbb9o2nFrpBun7NrAr.zHQG', // secret
         ]),
         'project_id' => $faker->numberBetween(1, config('seeds.projects.number')),
-        'created_at'  => now()->toDateTimeString(),
-        'updated_at'  => now()->toDateTimeString(),
+        'created_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
+        'updated_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
     ];
 });

@@ -6,7 +6,13 @@ $factory->define(App\Endpoint::class, function (Faker $faker) {
     return [
         'name' => $faker->bothify('##??'),
         'method' => $faker->randomElement([
-            'GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE',
+            'GET',
+            'GET,HEAD',
+            'POST',
+            'PUT',
+            'PATCH',
+            'PUT,PATCH',
+            'DELETE',
         ]),
         'uri' => 'api/'.$faker->randomElement([
             'users/{user}',
@@ -17,7 +23,7 @@ $factory->define(App\Endpoint::class, function (Faker $faker) {
         ]),
         'description' => $faker->sentence(),
         'project_id' => $faker->numberBetween(1, config('seeds.projects.number')),
-        'created_at'  => now()->toDateTimeString(),
-        'updated_at'  => now()->toDateTimeString(),
+        'created_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
+        'updated_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
     ];
 });

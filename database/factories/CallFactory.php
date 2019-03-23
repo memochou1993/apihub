@@ -20,7 +20,7 @@ $factory->define(App\Call::class, function (Faker $faker) {
             'body' => [],
         ]),
         'endpoint_id' => $faker->numberBetween(1, config('seeds.endpoints.number')),
-        'created_at'  => now()->toDateTimeString(),
-        'updated_at'  => now()->toDateTimeString(),
+        'created_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
+        'updated_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
     ];
 });

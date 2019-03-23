@@ -7,7 +7,7 @@ $factory->define(App\Project::class, function (Faker $faker) {
         'name' => $faker->bothify('##??'),
         'description' => $faker->sentence(),
         'private' => $faker->boolean(),
-        'created_at'  => now()->toDateTimeString(),
-        'updated_at'  => now()->toDateTimeString(),
+        'created_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
+        'updated_at'  => now()->subDays($faker->randomDigit(7))->toDateTimeString(),
     ];
 });

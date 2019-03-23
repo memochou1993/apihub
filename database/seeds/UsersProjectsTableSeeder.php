@@ -12,7 +12,9 @@ class UsersProjectsTableSeeder extends Seeder
      */
     public function run()
     {
-        $users_projects = factory(UserProject::class, config('seeds.users_projects.number'))->make()->toArray();
+        $users_projects = factory(UserProject::class, config('seeds.users_projects.number'))->make()->unique(function ($item) {
+            return $item['user_id'].'-'.$item['project_id'];
+        })->toArray();
 
         UserProject::insert($users_projects);
     }

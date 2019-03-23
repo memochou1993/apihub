@@ -33,7 +33,7 @@ class UserRepository implements UserInterface
      */
     public function searchUsers(string $q)
     {
-        return $this->user->search($q)->paginate($this->paginate);
+        return $this->user->search($q)->orderBy('updated_at', 'desc')->paginate($this->paginate);
     }
 
     /**
@@ -44,7 +44,7 @@ class UserRepository implements UserInterface
     {
         $this->castQueries($queries);
 
-        return $this->user->where($this->where)->paginate($this->paginate);
+        return $this->user->where($this->where)->orderBy('updated_at', 'desc')->paginate($this->paginate);
     }
 
     /**

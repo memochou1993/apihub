@@ -7,23 +7,23 @@ return [
     ],
 
     'projects' => [
-        'number' => 50,
+        'number' => 100,
     ],
 
     'users_projects' => [
-        'number' => 50,
+        'number' => 100,
     ],
 
     'environments' => [
-        'number' => 100,
+        'number' => 200,
     ],
 
     'endpoints' => [
-        'number' => 100,
+        'number' => 1000,
     ],
 
     'calls' => [
-        'number' => 500,
+        'number' => 1000,
     ],
 
 ];

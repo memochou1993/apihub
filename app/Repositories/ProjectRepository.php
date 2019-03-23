@@ -33,7 +33,7 @@ class ProjectRepository implements ProjectInterface
      */
     public function searchProjects(string $q)
     {
-        return $this->project->search($q)->paginate($this->paginate);
+        return $this->project->search($q)->orderBy('updated_at', 'DESC')->paginate($this->paginate);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProjectRepository implements ProjectInterface
     {
         $this->castQueries($queries);
 
-        return $this->project->where($this->where)->paginate($this->paginate);
+        return $this->project->where($this->where)->orderBy('updated_at', 'DESC')->paginate($this->paginate);
     }
 
     /**
@@ -56,7 +56,7 @@ class ProjectRepository implements ProjectInterface
     {
         $this->castQueries($queries);
 
-        return $user->projects()->where($this->where)->paginate($this->paginate);
+        return $user->projects()->where($this->where)->orderBy('updated_at', 'DESC')->paginate($this->paginate);
     }
 
     /**
