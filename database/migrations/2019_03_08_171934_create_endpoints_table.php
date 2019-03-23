@@ -15,9 +15,9 @@ class CreateEndpointsTable extends Migration
     {
         Schema::create('endpoints', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('group')->nullable();
+            $table->string('name')->nullable();
             $table->string('method');
-            $table->string('name');
+            $table->string('uri');
             $table->text('description')->nullable();
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

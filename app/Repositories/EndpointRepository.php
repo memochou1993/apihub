@@ -35,7 +35,7 @@ class EndpointRepository implements EndpointInterface
     {
         $this->castQueries($queries);
 
-        return $this->endpoint->where($this->where)->orderBy('group')->orderBy('method')->paginate($this->paginate);
+        return $this->endpoint->where($this->where)->orderBy('name')->orderBy('method')->paginate($this->paginate);
     }
 
     /**
@@ -47,7 +47,7 @@ class EndpointRepository implements EndpointInterface
     {
         $this->castQueries($queries);
 
-        return $project->endpoints()->where($this->where)->orderBy('group')->orderBy('method')->paginate($this->paginate);
+        return $project->endpoints()->where($this->where)->orderBy('name')->orderBy('method')->paginate($this->paginate);
     }
 
     /**

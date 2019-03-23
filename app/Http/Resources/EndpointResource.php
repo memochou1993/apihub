@@ -20,9 +20,9 @@ class EndpointResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'group' => $this->group,
-            'method' => $this->method,
             'name' => $this->name,
+            'method' => $this->method,
+            'uri' => $this->uri,
             'description' => $this->description,
             'created_at' => $convertDate($this->created_at),
             'updated_at' => $convertDate($this->updated_at),
