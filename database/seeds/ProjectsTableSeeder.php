@@ -12,6 +12,8 @@ class ProjectsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Project::class, config('seeds.projects.number'))->create();
+        $projects = factory(Project::class, config('seeds.projects.number'))->make()->toArray();
+
+        Project::insert($projects);
     }
 }

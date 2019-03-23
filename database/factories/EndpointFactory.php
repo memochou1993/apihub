@@ -17,5 +17,7 @@ $factory->define(App\Endpoint::class, function (Faker $faker) {
         ]),
         'description' => $faker->sentence(),
         'project_id' => $faker->numberBetween(1, config('seeds.projects.number')),
+        'created_at'  => now()->toDateTimeString(),
+        'updated_at'  => now()->toDateTimeString(),
     ];
 });

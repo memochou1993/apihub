@@ -12,6 +12,8 @@ class EndpointsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Endpoint::class, config('seeds.endpoints.number'))->create();
+        $endpoints = factory(Endpoint::class, config('seeds.endpoints.number'))->make()->toArray();
+
+        Endpoint::insert($endpoints);
     }
 }

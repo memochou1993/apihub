@@ -12,6 +12,8 @@ class EnvironmentsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Environment::class, config('seeds.environments.number'))->create();
+        $environments = factory(Environment::class, config('seeds.environments.number'))->make()->toArray();
+
+        Environment::insert($environments);
     }
 }

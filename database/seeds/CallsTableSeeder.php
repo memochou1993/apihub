@@ -12,6 +12,8 @@ class CallsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Call::class, config('seeds.calls.number'))->create();
+        $calls = factory(Call::class, config('seeds.calls.number'))->make()->toArray();
+
+        Call::insert($calls);
     }
 }
