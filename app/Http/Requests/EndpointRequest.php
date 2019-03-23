@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\With;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EndpointRequest extends FormRequest
@@ -30,7 +31,8 @@ class EndpointRequest extends FormRequest
             case 'GET':
                 return [
                     'with' => new With([
-                        'project', 'calls',
+                        'project',
+                        'calls',
                     ]),
                     'paginate' => [
                         'min:1',
@@ -42,7 +44,16 @@ class EndpointRequest extends FormRequest
                 return [
                     'method' => [
                         'required',
-                        'in:GET,HEAD,POST,PUT,PATCH,DELETE',
+                        Rule::in([
+                            'GET',
+                            'HEAD',
+                            'GET,HEAD',
+                            'POST',
+                            'PUT',
+                            'PATCH',
+                            'PUT,PATCH',
+                            'DELETE',
+                        ]),
                    ],
                     'name' => [
                         'required',
