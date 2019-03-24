@@ -12,7 +12,7 @@ $factory->define(App\Call::class, function (Faker $faker) {
         ]),
         'response' => json_encode([
             'status' => $faker->randomElement([
-                200, 201, 204, 401, 403,
+                200, 201, 204,
             ]),
             'headers' => [
                 'Content-Type' => 'application/json',
