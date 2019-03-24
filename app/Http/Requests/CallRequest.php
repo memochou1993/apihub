@@ -42,7 +42,7 @@ class CallRequest extends FormRequest
                 return [
                     'request' => [
                         'required',
-                   ],
+                    ],
                 ];
 
             case 'PUT':
@@ -50,7 +50,7 @@ class CallRequest extends FormRequest
                 return [
                     'request' => [
                         'required',
-                   ],
+                    ],
                 ];
 
             default:

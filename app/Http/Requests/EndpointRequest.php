@@ -54,10 +54,10 @@ class EndpointRequest extends FormRequest
                             'PUT,PATCH',
                             'DELETE',
                         ]),
-                   ],
+                    ],
                     'name' => [
                         'required',
-                   ],
+                    ],
                 ];
 
             case 'PUT':
@@ -65,10 +65,10 @@ class EndpointRequest extends FormRequest
                 return [
                     'method' => [
                         'required',
-                   ],
+                    ],
                     'name' => [
                         'required',
-                   ],
+                    ],
                 ];
 
             default:

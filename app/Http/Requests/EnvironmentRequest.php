@@ -42,10 +42,10 @@ class EnvironmentRequest extends FormRequest
                 return [
                     'name' => [
                         'required',
-                   ],
+                    ],
                     'variable' => [
                         'required',
-                   ],
+                    ],
                 ];
 
             case 'PUT':
@@ -53,10 +53,10 @@ class EnvironmentRequest extends FormRequest
                 return [
                     'name' => [
                         'required',
-                   ],
+                    ],
                     'variable' => [
                         'required',
-                   ],
+                    ],
                 ];
 
             default:
